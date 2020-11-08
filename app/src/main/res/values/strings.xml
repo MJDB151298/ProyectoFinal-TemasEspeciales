@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">E-Commerce RMS</string>
+
+    <string name="request_email">Enter Email</string>
+    <string name="request_password">Enter Password</string>
+    <string name="request_name">Enter Name</string>
+    <string name="request_user">Enter User</string>
+    <string name="request_contact">Enter Contact</string>
+    <string name="confirm_password">Confirm Password</string>
+
+
+    <string name="forgot_password">Forgot Password</string>
+    <string name="access_register">Register Now</string>
+    <string name="access_login">Login now</string>
+
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+
+
+    <color name="green">#029350</color>
+    <color name="white">#ffffff</color>
+</resources>
