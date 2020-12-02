@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">E-Commerce RMS</string>
+    <string name="app_name">E-Commerce</string>
 
     <string name="request_email">Enter Email</string>
     <string name="request_password">Enter Password</string>

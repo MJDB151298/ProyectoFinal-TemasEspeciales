@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendToRegister(View view){
-        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-        startActivity(intent);
+
     }
 }
