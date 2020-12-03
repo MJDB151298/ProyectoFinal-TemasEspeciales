@@ -7,6 +7,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+//TODO: Decidir actividad principal de la aplicacion para saber donde poner el floating action button - Marcos
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

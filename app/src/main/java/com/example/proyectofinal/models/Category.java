@@ -3,10 +3,12 @@ package com.example.proyectofinal.models;
 import android.media.Image;
 
 public class Category {
+    private int id;
     private String name;
     private Image image;
 
-    public Category(String name, Image image) {
+    public Category(int id, String name, Image image) {
+        this.id = id;
         this.name = name;
         this.image = image;
     }
@@ -25,5 +27,9 @@ public class Category {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public int getId() {
+        return id;
     }
 }
