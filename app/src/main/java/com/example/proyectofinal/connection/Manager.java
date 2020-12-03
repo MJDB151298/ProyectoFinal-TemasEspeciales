@@ -2,6 +2,7 @@ package com.example.proyectofinal.connection;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Entity;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -101,7 +102,23 @@ public class Manager {
 
         }
         cursor.close();
-        System.out.println("Se encontro" + aux.getName());
+        //System.out.println("Se encontro" + aux.getName());
+        return aux;
+    }
+
+    public User findUserEmail(String email) {
+        User aux = null;
+        String query = "SELECT * FROM " + dataBaseHelper.TABLE_NAME_USER + " WHERE " + dataBaseHelper.MAIL + " = ?";
+        Cursor cursor = database.rawQuery(query, new String[]{email});
+        Log.e(dataBaseHelper.class.getName(), query);
+
+        while (cursor.moveToNext()) {
+            byte[] imgByte = cursor.getBlob(5);
+            aux = new User(cursor.getString(1), cursor.getString(3), BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length), cursor.getString(2), cursor.getString(4));
+
+        }
+        cursor.close();
+       // System.out.println("Se encontro" + aux.getName());
         return aux;
     }
 
@@ -119,6 +136,32 @@ public class Manager {
 
     public SQLiteDatabase getDatabase () {
         return database;
+    }
+
+    public User logIn(String credential, String pass){
+        User aux = null;
+        aux = findUserByUsername(credential);
+        if (aux == null){
+            aux = findUserEmail(credential);
+            if(aux == null){
+                return null;
+            }
+            else if( aux != null && aux.getPassword().equals(pass)){
+                return aux;
+            }
+            else{
+                return new User("Bad Credentials",null,null,null,null);
+            }
+        }
+        else if( aux != null && aux.getPassword().equals(pass)){
+            return aux;
+        }
+        else{
+            return new User("Bad Credentials",null,null,null,null);
+        }
+
+
+
     }
 
 }

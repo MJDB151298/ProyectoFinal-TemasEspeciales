@@ -144,12 +144,12 @@ public class UpdateDeleteProductFragment extends Fragment {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Bundle receivedBundle = getArguments();
+                              /*  Bundle receivedBundle = getArguments();
                                 DBManagerProducts dbManagerProducts = new DBManagerProducts(getView().getContext()).open();
                                 dbManagerProducts.delete(receivedBundle.getInt("PRODUCT_ID"));
                                 dbManagerProducts.close();
 
-                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
+                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());*/
                             }
 
                         })

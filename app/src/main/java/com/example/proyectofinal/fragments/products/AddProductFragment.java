@@ -199,7 +199,7 @@ public class AddProductFragment extends Fragment {
                     System.out.println("OOPS");
                 }
 
-                final Category category = Category.getCategoryByName(getContext(), categorySpinner.getSelectedItem().toString());
+               /* final Category category = Category.getCategoryByName(getContext(), categorySpinner.getSelectedItem().toString());
                 if(Product.isCategoryInProduct(getContext(), category)){
                     new AlertDialog.Builder(getContext())
                             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -228,7 +228,7 @@ public class AddProductFragment extends Fragment {
                             .setNegativeButton("No", null)
                             .show();
 
-                }
+                }*/
             }
         });
     }

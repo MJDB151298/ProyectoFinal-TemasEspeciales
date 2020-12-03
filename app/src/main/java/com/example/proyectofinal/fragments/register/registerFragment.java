@@ -58,6 +58,14 @@ public class registerFragment extends Fragment {
         views.add(cPass);
         Manager.getInstance(getActivity()).open();
 
+        /*name.setText(Manager.getInstance(getActivity()).getAuth().getName());
+        user.setText(Manager.getInstance(getActivity()).getAuth().getUsername());
+        pass.setText(Manager.getInstance(getActivity()).getAuth().getPassword());
+        mail.setText(Manager.getInstance(getActivity()).getAuth().getMail());
+
+        view.setImageBitmap(Manager.getInstance(getActivity()).getAuth().getPp());*/
+
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,12 +79,12 @@ public class registerFragment extends Fragment {
                     /*Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("IMAGEN",url );
                     startActivity(intent);*/
-                    name.setText(Manager.getInstance(getActivity()).getAuth().getName());
+                    /*name.setText(Manager.getInstance(getActivity()).getAuth().getName());
                     user.setText(Manager.getInstance(getActivity()).getAuth().getUsername());
                     pass.setText(Manager.getInstance(getActivity()).getAuth().getPassword());
                     mail.setText(Manager.getInstance(getActivity()).getAuth().getMail());
 
-                    view.setImageBitmap(Manager.getInstance(getActivity()).getAuth().getPp());
+                    view.setImageBitmap(Manager.getInstance(getActivity()).getAuth().getPp());*/
                     Manager.getInstance(getActivity()).close();
                 }
                 else if( !(pass.getText().toString().equals(cPass.getText().toString()))){
