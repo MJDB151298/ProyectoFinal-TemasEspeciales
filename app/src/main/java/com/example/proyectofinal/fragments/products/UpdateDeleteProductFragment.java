@@ -1,15 +1,21 @@
 package com.example.proyectofinal.fragments.products;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.helpers.SpinnerHelper;
+import com.example.proyectofinal.models.Category;
+import com.example.proyectofinal.models.Product;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,5 +91,72 @@ public class UpdateDeleteProductFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        final TextView productNameTextView = getView().findViewById(R.id.productNameTextView);
+        final TextView productPriceText = getView().findViewById(R.id.productPriceTextView);
+        final Spinner categorySpinner = getView().findViewById(R.id.categorySpinner);
+        Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
+        Button updateProductButton = getView().findViewById(R.id.updateProductButton);
+        Button deleteProductButton = getView().findViewById(R.id.deleteProductButton);
+
+        addCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: SAUL LLAMA TU FORMA DE GUARDAR CATEGORIAS DESDE AQUI
+            }
+        });
+
+        updateProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle receivedBundle = getArguments();
+                String productName = productNameTextView.getText().toString();
+                int productPrice = 0;
+                try{
+                    productPrice = Integer.parseInt(productPriceText.getText().toString());
+                }catch(Exception e){
+                    System.out.println("OOPS");
+                }
+
+                //TODO: USE DATABASE
+                /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
+                Product product = new Product(receivedBundle.getInt("PRODUCT_ID"), productName, productPrice, category);
+                DBManagerProducts dbManagerProducts = new DBManagerProducts(v.getContext()).open();
+                dbManagerProducts.update(product);
+                dbManagerProducts.close();**/
+
+                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
+            }
+        });
+
+        deleteProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Borrar Producto")
+                        .setMessage("Esta seguro que desea eliminar este producto?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Bundle receivedBundle = getArguments();
+                                DBManagerProducts dbManagerProducts = new DBManagerProducts(getView().getContext()).open();
+                                dbManagerProducts.delete(receivedBundle.getInt("PRODUCT_ID"));
+                                dbManagerProducts.close();
+
+                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+            }
+        });
     }
 }

@@ -14,6 +14,7 @@ import com.example.proyectofinal.helpers.ButtonHelper;
 import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,10 +68,11 @@ public class ListProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragmentº
-        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_product, container, false);
 
         //Obteniendo la informacion necesaria a traves de la base de datos
-        List<Product> productList = Product.getProducts(this.getContext());
+        List<Product> productList = new ArrayList<>();//Product.getProducts(this.getContext());
+        //TODO: Llenar productos con base de datos - Marcos
         System.out.println("El size de productos es: " + productList.size());
 
         //Mostrando el float action button

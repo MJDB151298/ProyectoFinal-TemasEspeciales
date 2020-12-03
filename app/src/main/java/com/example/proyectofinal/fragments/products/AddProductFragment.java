@@ -170,13 +170,14 @@ public class AddProductFragment extends Fragment {
                     System.out.println("OOPS");
                 }
 
-                Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
+                //TODO: USE DATABASE
+                /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
                 System.out.println(category.getId() + " - " + category.getName());
                 DBManagerProducts dbManagerProducts = new DBManagerProducts(v.getContext()).open();
                 dbManagerProducts.insert(productName, productPrice, category.getId());
-                dbManagerProducts.close();
+                dbManagerProducts.close();**/
 
-                FragmentHelper.AddFragment(new ProductListFragment(), getActivity());
+                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
             }
         });
 

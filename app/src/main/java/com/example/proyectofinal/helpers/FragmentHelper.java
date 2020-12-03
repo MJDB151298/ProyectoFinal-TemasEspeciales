@@ -8,7 +8,7 @@ import com.example.proyectofinal.R;
 
 public class FragmentHelper {
     //Removes previous fragment and loads new one
-    /**public static void AddFragment(Fragment fragment, FragmentActivity activity){
+    public static void AddFragment(Fragment fragment, FragmentActivity activity){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.remove(fragmentManager.findFragmentById(R.id.fragment_container));
@@ -22,5 +22,5 @@ public class FragmentHelper {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null);
         fragmentTransaction.commit();
-    }**/
+    }
 }

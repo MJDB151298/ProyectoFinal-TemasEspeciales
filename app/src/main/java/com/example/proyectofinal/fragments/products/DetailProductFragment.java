@@ -71,8 +71,9 @@ public class DetailProductFragment extends Fragment {
         TextView productDetailPrice = view.findViewById(R.id.productDetailPrice);
 
         //Ocultando el float action button
-        //ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), true);
+        ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), true);
 
+        //TODO: Poner imagenes que no sean placeholders, ni jabones, ni grappas con limon - Marcos
         final int[] testImages = {R.drawable.soap, R.drawable.grappa_con_limon};
         CarouselView productDetailImages = view.findViewById(R.id.productPhotosCarousel);
         productDetailImages.setPageCount(testImages.length);
