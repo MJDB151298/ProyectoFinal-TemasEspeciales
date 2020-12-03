@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="4dp">
+        <ImageView
+                android:layout_width="123dp"
+                android:layout_height="200dp" app:srcCompat="@android:mipmap/sym_def_app_icon"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:id="@+id/productImage" android:contentDescription="Android version logo"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="176dp">
+
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/productNameText"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="140dp" android:layout_marginTop="24dp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/productCategoryText"
+                    app:layout_constraintStart_toEndOf="@+id/productPriceText"
+                    android:layout_marginStart="28dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="24dp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/productPriceText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productNameText"
+                    android:layout_marginTop="20dp" android:layout_marginStart="140dp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/productIdText"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginEnd="411dp" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="140dp" android:layout_marginTop="24dp"/>
+            <TextView
+                    android:text="Some random description about the randomness of a item that is indeed random"
+                    android:layout_width="227dp"
+                    android:layout_height="58dp" android:id="@+id/productDescriptionText"
+                    app:layout_constraintTop_toBottomOf="@+id/productPriceText"
+                    android:layout_marginTop="24dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="140dp"/>
+            <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" android:id="@+id/productHandlerButton"
+                    android:drawableStart="@drawable/round_settings_black_18dp"
+                    app:layout_constraintStart_toEndOf="@+id/productCategoryText"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"
+                    android:layout_marginStart="40dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
