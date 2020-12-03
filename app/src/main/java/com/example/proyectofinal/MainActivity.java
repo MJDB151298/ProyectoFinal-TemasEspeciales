@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import com.example.proyectofinal.connection.Manager;
 
+
 public class MainActivity extends AppCompatActivity {
 
     TextView name,user,pass,mail;
