@@ -71,7 +71,7 @@ public class ListProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_product, container, false);
 
         //Obteniendo la informacion necesaria a traves de la base de datos
-        List<Product> productList = new ArrayList<>();//Product.getProducts(this.getContext());
+        List<Product> productList = Product.getProducts(this.getContext());
         //TODO: Llenar productos con base de datos - Marcos
         System.out.println("El size de productos es: " + productList.size());
 

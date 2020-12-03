@@ -1,6 +1,7 @@
 package com.example.proyectofinal.connection;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -38,6 +39,16 @@ public class Manager {
         helper.close();
     }
 
+    public Cursor fetchObject(String[] columns, String table){
+        Cursor cursor = database.query(table, columns, null, null, null, null, null);
+        return cursor;
+    }
+
+    public Cursor fetchObjectById(String[] columns, String table, String id_type, Integer id){
+        Cursor cursor = database.query(table, columns, id_type + "=?", new String[]{id.toString()}, null, null, null);
+        return cursor;
+    }
+
     public ArrayList<Product> getAllProducts() {
         return allProducts;
     }
@@ -50,5 +61,11 @@ public class Manager {
         return auth;
     }
 
+    public dataBaseHelper getHelper() {
+        return helper;
+    }
 
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
 }
