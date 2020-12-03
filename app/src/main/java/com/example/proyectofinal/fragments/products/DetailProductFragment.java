@@ -88,7 +88,7 @@ public class DetailProductFragment extends Fragment {
         Button minusButton = view.findViewById(R.id.minusButton);
         final TextView productQuantityText = view.findViewById(R.id.productQuantityText);
 
-        // productDetailDescription.setText(bundle.getString("PRODUCT_DESCRIPTION"));
+        productDetailDescription.setText(bundle.getString("PRODUCT_DESCRIPTION"));
         productDetailPrice.setText(bundle.getString("PRODUCT_PRICE"));
 
         plusButton.setOnClickListener(new View.OnClickListener() {

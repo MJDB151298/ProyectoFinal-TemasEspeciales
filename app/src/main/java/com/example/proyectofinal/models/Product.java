@@ -3,6 +3,7 @@ package com.example.proyectofinal.models;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.Image;
 import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.connection.dataBaseHelper;
@@ -16,7 +17,7 @@ public class Product {
     private String description;
     private Double price;
     private Category category;
-    private List<Image> images = new ArrayList<>();
+    private List<Bitmap> images = new ArrayList<>();
 
     public Product(int id, String name, String description, double price,Category category) {
         this.id = id;
