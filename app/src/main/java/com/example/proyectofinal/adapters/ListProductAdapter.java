@@ -89,7 +89,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
             productImage.setImageResource(R.drawable.soap);
             System.out.println("ALOOOOO");
             productNameText.setText(product.getName());
-            productPriceText.setText(Integer.toString(product.getPrice()));
+            productPriceText.setText(Double.toString(product.getPrice()));
             productCategoryText.setText(product.getCategory().getName());
             productIdText.setText(Integer.toString(product.getId()));
 

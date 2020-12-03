@@ -15,8 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectofinal.MainActivity;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.fragments.forgotpass.forgotPasswordFragment;
 import com.example.proyectofinal.fragments.register.registerFragment;
+import com.example.proyectofinal.models.User;
 import com.google.android.material.snackbar.Snackbar;
 
 public class loginFragment extends Fragment {
@@ -28,16 +30,32 @@ public class loginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
         btnLogin = root.findViewById(R.id.btnlogin);
+        Manager.getInstance(getActivity()).open();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(txtMail.getText().toString().isEmpty() && txtPass.getText().toString().isEmpty()){
+                if(txtMail.getText().toString().isEmpty() || txtPass.getText().toString().isEmpty()){
                     Snackbar.make(view,"Debe llenar todos los campos",Snackbar.LENGTH_LONG).show();
                 }
                 else{
-
+                    User aux = Manager.getInstance(getActivity()).logIn(txtMail.getText().toString(),txtPass.getText().toString());
+                    if(aux == null){
+                        txtMail.setError("User not exist");
+                    }
+                    else if(aux.getName().equals("Bad Credentials")){
+                        txtMail.setError("Email or Password wrong");
+                    }
+                    else{
+                        Manager.getInstance(getActivity()).setAuth(aux);
+                        Fragment newFragment;
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        newFragment = new registerFragment();
+                        transaction.replace(R.id.nav_host_outside_fragment, newFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }/*
                     Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
             }
         });
