@@ -1,15 +1,16 @@
 package com.example.proyectofinal.models;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 public class User {
     private String name;
     private String username;
-    private Image pp;
+    private Bitmap pp;
     private String mail;
     private String password;
 
-    public User(String name, String username, Image pp, String mail, String password) {
+    public User(String name, String username, Bitmap pp, String mail, String password) {
         this.name = name;
         this.username = username;
         this.pp = pp;
@@ -33,11 +34,11 @@ public class User {
         this.username = username;
     }
 
-    public Image getPp() {
+    public Bitmap getPp() {
         return pp;
     }
 
-    public void setPp(Image pp) {
+    public void setPp(Bitmap pp) {
         this.pp = pp;
     }
 

@@ -42,7 +42,7 @@ public class dataBaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_USER = "CREATE TABLE " + TABLE_NAME_USER +
             "( " + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            NAME_USER + " TEXT NOT NULL, "+MAIL+ " TEXT NOT NULL, "+USERNAME+" TEXT NOT NULL, "+PASSWORD_USER+" TEXT NOT NULL, "+IMG_USER+" BLOB NOT NULL )";
+            NAME_USER + " TEXT NOT NULL, "+MAIL+ " TEXT UNIQUE NOT NULL, "+USERNAME+" TEXT UNIQUE NOT NULL, "+PASSWORD_USER+" TEXT NOT NULL, "+IMG_USER+" BLOB NOT NULL )";
 
 
     public dataBaseHelper(Context context) {
