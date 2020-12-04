@@ -1,7 +1,9 @@
 package com.example.proyectofinal.adapters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +91,15 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         }
 
         public void bindData(Product product){
+            /**byte[] valueDecoded= new byte[0];
+            try {
+                valueDecoded = Base64.decode(product.getImages().get(0), Base64.DEFAULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }**/
+
             productImage.setImageResource(R.drawable.soap);
+            //productImage.setImageBitmap(BitmapFactory.decodeByteArray(valueDecoded, 0, valueDecoded.length));
             System.out.println("ALOOOOO");
             productNameText.setText(product.getName());
             productDescriptionText.setText(product.getDescription());

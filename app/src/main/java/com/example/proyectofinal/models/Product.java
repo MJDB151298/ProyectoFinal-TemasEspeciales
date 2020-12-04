@@ -17,7 +17,7 @@ public class Product {
     private String description;
     private Double price;
     private Category category;
-    private List<Bitmap> images = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
 
     public Product(int id, String name, String description, double price,Category category) {
         this.id = id;
@@ -45,6 +45,10 @@ public class Product {
 
     public String getDescription() {
         return description;
+    }
+
+    public List<String> getImages() {
+        return images;
     }
 
     public static ArrayList<Product> getProducts(Context context){

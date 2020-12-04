@@ -74,8 +74,11 @@ public class ListProductFragment extends Fragment {
         //Obteniendo la informacion necesaria a traves de la base de datos
         List<Product> productList = new ArrayList<>();//Product.getProducts(this.getContext());
         Category category = new Category(1, "Bebidas", null);
-        productList.add(new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category));
-        productList.add(new Product(1, "Jabon", "The ultimate race has arrived", 300, category));
+        Product first_product = new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category);
+        //first_product.getImages().add()
+        productList.add(first_product);
+        Product second_product = new Product(1, "Jabon", "The ultimate race has arrived", 300, category);
+        productList.add(second_product);
         //TODO: Llenar productos con base de datos - Marcos
         System.out.println("El size de productos es: " + productList.size());
 

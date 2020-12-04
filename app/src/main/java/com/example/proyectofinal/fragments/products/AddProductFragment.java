@@ -1,13 +1,14 @@
 package com.example.proyectofinal.fragments.products;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,6 +21,10 @@ import com.example.proyectofinal.helpers.SpinnerHelper;
 import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +41,10 @@ public class AddProductFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //Components
+    ImageButton selectImageButton;
+    ImageView productImageView;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -74,6 +83,8 @@ public class AddProductFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
 
+
+
         //Ocultando el float action button
         ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), true);
 
@@ -108,9 +119,18 @@ public class AddProductFragment extends Fragment {
         final TextView productPriceText = getView().findViewById(R.id.productPriceTextView);
         final Button saveProductButton = getView().findViewById(R.id.saveProductButton);
         Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
-        Button deleteCategoryButton = getView().findViewById(R.id.deleteCategoryButton);
         final Spinner categorySpinner = getView().findViewById(R.id.categorySpinner);
         saveProductButton.setEnabled(false);
+
+        selectImageButton = getView().findViewById(R.id.selectImageButton);
+        selectImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getGallery();
+            }
+        });
+
+        productImageView = getView().findViewById(R.id.productImageView);
 
 
 
@@ -187,49 +207,22 @@ public class AddProductFragment extends Fragment {
                 //TODO: SAUL LLAMA TU FORMA DE GUARDAR CATEGORIAS DESDE AQUI
             }
         });
+    }
 
-        deleteCategoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String productName = productNameTextView.getText().toString();
-                int productPrice = 0;
-                try{
-                    productPrice = Integer.parseInt(productPriceText.getText().toString());
-                }catch(Exception e){
-                    System.out.println("OOPS");
-                }
+    private void getGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent.setType("image/");
+        startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),200);
+    }
 
-               /* final Category category = Category.getCategoryByName(getContext(), categorySpinner.getSelectedItem().toString());
-                if(Product.isCategoryInProduct(getContext(), category)){
-                    new AlertDialog.Builder(getContext())
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Error")
-                            .setMessage("Categoria se encuentra en uso")
-                            .setNeutralButton("Ok", null)
-                            .show();
-                }
-                else{
-                    new AlertDialog.Builder(getContext())
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Borrar Categoria")
-                            .setMessage("Esta seguro que desea eliminar esta categoria?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    System.out.println(category.getId() + " - " + category.getName());
-                                    DBManagerCategory dbManagerCategory = new DBManagerCategory(getContext()).open();
-                                    dbManagerCategory.delete(category.getId());
-                                    SpinnerHelper.fillCategorySpinner(categorySpinner, getContext());
-                                    dbManagerCategory.close();
-                                }
-
-                            })
-                            .setNegativeButton("No", null)
-                            .show();
-
-                }*/
-            }
-        });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            Uri patch = data.getData();
+            productImageView.setImageURI(patch);
+            productImageView.setVisibility(View.VISIBLE);
+            selectImageButton.setVisibility(View.INVISIBLE);
+        }
     }
 }
