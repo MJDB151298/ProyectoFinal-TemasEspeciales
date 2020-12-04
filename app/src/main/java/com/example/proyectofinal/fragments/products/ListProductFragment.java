@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.adapters.ListProductAdapter;
 import com.example.proyectofinal.helpers.ButtonHelper;
+import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -71,7 +72,13 @@ public class ListProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_product, container, false);
 
         //Obteniendo la informacion necesaria a traves de la base de datos
-        List<Product> productList = Product.getProducts(this.getContext());
+        List<Product> productList = new ArrayList<>();//Product.getProducts(this.getContext());
+        Category category = new Category(1, "Bebidas", null);
+        Product first_product = new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category);
+        //first_product.getImages().add()
+        productList.add(first_product);
+        Product second_product = new Product(1, "Jabon", "The ultimate race has arrived", 300, category);
+        productList.add(second_product);
         //TODO: Llenar productos con base de datos - Marcos
         System.out.println("El size de productos es: " + productList.size());
 
@@ -84,5 +91,12 @@ public class ListProductFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //Mostrando el float action button
+        ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), false);
     }
 }

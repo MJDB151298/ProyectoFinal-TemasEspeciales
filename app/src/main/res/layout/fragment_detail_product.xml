@@ -17,7 +17,7 @@
                 app:layout_constraintHorizontal_bias="0.492"
                 android:text="This is a description placerholder, because right now, we dont have any"/>
         <com.synnapps.carouselview.CarouselView
-                android:id="@+id/productPhotosCarousel"
+                android:id="@+id/productSavePhotosCarousel"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:fillColor="#FFFFFFFF"

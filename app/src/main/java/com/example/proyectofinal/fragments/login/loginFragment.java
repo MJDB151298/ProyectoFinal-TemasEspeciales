@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectofinal.MainActivity;
+import com.example.proyectofinal.ProductActivity;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.fragments.forgotpass.forgotPasswordFragment;
@@ -47,15 +48,16 @@ public class loginFragment extends Fragment {
                     }
                     else{
                         Manager.getInstance(getActivity()).setAuth(aux);
-                        Fragment newFragment;
+                        Intent intent = new Intent(getActivity(), ProductActivity.class);
+                        startActivity(intent);
+                        /**Fragment newFragment;
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         newFragment = new registerFragment();
                         transaction.replace(R.id.nav_host_outside_fragment, newFragment);
                         transaction.addToBackStack(null);
-                        transaction.commit();
-                    }/*
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);*/
+                        transaction.commit();**/
+                    }
+
                 }
             }
         });

@@ -1,7 +1,9 @@
 package com.example.proyectofinal.adapters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         private TextView productNameText;
+        private TextView productDescriptionText;
         private TextView productPriceText;
         private TextView productCategoryText;
         private TextView productIdText;
@@ -63,6 +66,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         public ProductViewHolder(@NonNull final View itemView) {
             super(itemView);
             productNameText = itemView.findViewById(R.id.productNameText);
+            productDescriptionText = itemView.findViewById(R.id.productDescriptionText);
             productPriceText = itemView.findViewById(R.id.productPriceText);
             productCategoryText = itemView.findViewById(R.id.productCategoryText);
             productIdText = itemView.findViewById(R.id.productIdText);
@@ -77,6 +81,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
 
                     Bundle bundle = new Bundle();
                     bundle.putString("PRODUCT_PRICE", productPriceText.getText().toString());
+                    bundle.putString("PRODUCT_DESCRIPTION", productDescriptionText.getText().toString());
 
                     DetailProductFragment productDetailFragment = new DetailProductFragment();
                     productDetailFragment.setArguments(bundle);
@@ -86,9 +91,18 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
         }
 
         public void bindData(Product product){
+            /**byte[] valueDecoded= new byte[0];
+            try {
+                valueDecoded = Base64.decode(product.getImages().get(0), Base64.DEFAULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }**/
+
             productImage.setImageResource(R.drawable.soap);
+            //productImage.setImageBitmap(BitmapFactory.decodeByteArray(valueDecoded, 0, valueDecoded.length));
             System.out.println("ALOOOOO");
             productNameText.setText(product.getName());
+            productDescriptionText.setText(product.getDescription());
             productPriceText.setText(Double.toString(product.getPrice()));
             productCategoryText.setText(product.getCategory().getName());
             productIdText.setText(Integer.toString(product.getId()));
