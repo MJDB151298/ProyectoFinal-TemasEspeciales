@@ -38,4 +38,11 @@
     <string name="menu_help">Help</string>
     <string name="menu_Profile">Profile</string>
     <string name="menu_logout">Logout</string>
+
+    <!--Button actions-->
+    <string name="button_delete">DELETE</string>
+    <string name="button_update">UPDATE</string>
+
+    <!--Car Strings-->
+    <string name="car_proceed">PROCEED TO CHECKOUT</string>
 </resources>
