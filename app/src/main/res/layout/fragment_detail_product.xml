@@ -17,7 +17,7 @@
                 app:layout_constraintHorizontal_bias="0.492"
                 android:text="This is a description placerholder, because right now, we dont have any"/>
         <com.synnapps.carouselview.CarouselView
-                android:id="@+id/productSavePhotosCarousel"
+                android:id="@+id/productPhotosCarousel"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:fillColor="#FFFFFFFF"
@@ -63,7 +63,7 @@
         <Button
                 android:text="ADD TO CART"
                 android:layout_width="149dp"
-                android:layout_height="40dp" android:id="@+id/button3"
+                android:layout_height="40dp" android:id="@+id/addToCartButton"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/plusButton"
                 android:background="@drawable/rounded_button"
                 app:layout_constraintHorizontal_bias="0.588"

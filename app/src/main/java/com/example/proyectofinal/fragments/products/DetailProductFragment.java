@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.helpers.ButtonHelper;
+import com.example.proyectofinal.models.CarItem;
+import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -70,8 +73,6 @@ public class DetailProductFragment extends Fragment {
         TextView productDetailDescription = view.findViewById(R.id.productDetailDescription);
         TextView productDetailPrice = view.findViewById(R.id.productDetailPrice);
 
-        //Ocultando el float action button
-        ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), true);
 
         //TODO: Poner imagenes que no sean placeholders, ni jabones, ni grappas con limon - Marcos
         final int[] testImages = {R.drawable.soap, R.drawable.grappa_con_limon};
@@ -86,6 +87,7 @@ public class DetailProductFragment extends Fragment {
 
         Button plusButton = view.findViewById(R.id.plusButton);
         Button minusButton = view.findViewById(R.id.minusButton);
+        Button addToCartButton = view.findViewById(R.id.addToCartButton);
         final TextView productQuantityText = view.findViewById(R.id.productQuantityText);
 
         productDetailDescription.setText(bundle.getString("PRODUCT_DESCRIPTION"));
@@ -108,6 +110,15 @@ public class DetailProductFragment extends Fragment {
                     total -= 1;
                     productQuantityText.setText(Integer.toString(total));
                 }
+            }
+        });
+
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Product product = null;//new Product(); //TODO: Buscar Producto por id - Marcos
+                Manager.getInstance(getContext()).getCarItems().add(new CarItem(product, Integer.parseInt(productQuantityText.getText().toString())));
+                //TODO: Saul actualizar la burbujita aqui
             }
         });
         return view;
