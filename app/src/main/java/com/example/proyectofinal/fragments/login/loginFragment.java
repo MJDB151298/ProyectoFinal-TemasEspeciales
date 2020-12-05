@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectofinal.MainActivity;
+import com.example.proyectofinal.MainMenu;
 import com.example.proyectofinal.ProductActivity;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.connection.Manager;
@@ -48,7 +49,7 @@ public class loginFragment extends Fragment {
                     }
                     else{
                         Manager.getInstance(getActivity()).setAuth(aux);
-                        Intent intent = new Intent(getActivity(), ProductActivity.class);
+                        Intent intent = new Intent(getActivity(), MainMenu.class);
                         startActivity(intent);
                         /**Fragment newFragment;
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
