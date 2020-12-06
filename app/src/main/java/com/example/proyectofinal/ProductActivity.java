@@ -17,7 +17,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        FloatingActionButton button = findViewById(R.id.callCreateProductButton);
+       /** FloatingActionButton button = findViewById(R.id.callCreateProductButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,6 +28,6 @@ public class ProductActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ListProductFragment listProductFragment = new ListProductFragment();
         fragmentTransaction.replace(R.id.fragment_container, listProductFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();**/
     }
 }

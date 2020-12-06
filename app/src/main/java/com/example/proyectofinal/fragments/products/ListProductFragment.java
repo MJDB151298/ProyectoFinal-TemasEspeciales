@@ -8,9 +8,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.proyectofinal.ProductActivity;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.adapters.ListProductAdapter;
 import com.example.proyectofinal.helpers.ButtonHelper;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -71,6 +73,15 @@ public class ListProductFragment extends Fragment {
         // Inflate the layout for this fragmentº
         View view = inflater.inflate(R.layout.fragment_list_product, container, false);
 
+        //Floating button
+        FloatingActionButton button = view.findViewById(R.id.callCreateProductButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentHelper.ReplaceFragment(new AddProductFragment(), getActivity());
+            }
+        });
+
         //Obteniendo la informacion necesaria a traves de la base de datos
         List<Product> productList = new ArrayList<>();//Product.getProducts(this.getContext());
         Category category = new Category(1, "Bebidas", null);
@@ -97,6 +108,6 @@ public class ListProductFragment extends Fragment {
     public void onResume(){
         super.onResume();
         //Mostrando el float action button
-        ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), false);
+        //ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), false);
     }
 }

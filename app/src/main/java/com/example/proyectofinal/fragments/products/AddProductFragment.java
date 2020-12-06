@@ -84,10 +84,6 @@ public class AddProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_product, container, false);
 
 
-
-        //Ocultando el float action button
-        ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), true);
-
         Bundle bundle = getArguments();
         if(bundle != null && bundle.containsKey("PRODUCT_NAME")){
             TextView productNameTextView = view.findViewById(R.id.productNameTextView);
