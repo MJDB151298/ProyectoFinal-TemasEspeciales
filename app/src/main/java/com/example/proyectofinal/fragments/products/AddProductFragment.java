@@ -2,11 +2,14 @@ package com.example.proyectofinal.fragments.products;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -23,6 +26,8 @@ import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+
+import java.io.ByteArrayOutputStream;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -185,6 +190,12 @@ public class AddProductFragment extends Fragment {
                 }catch(Exception e){
                     System.out.println("OOPS");
                 }
+
+                BitmapDrawable drawable = (BitmapDrawable) productImageView.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                String image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
 
                 //TODO: USE DATABASE
                 /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
