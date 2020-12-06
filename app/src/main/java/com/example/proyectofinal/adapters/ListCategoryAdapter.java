@@ -4,11 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.proyectofinal.MainMenu;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.fragments.category.AddCategoryFragment;
+import com.example.proyectofinal.fragments.category.ListCategoryFragment;
 import com.example.proyectofinal.models.Category;
 
 import java.io.Serializable;
@@ -30,15 +36,27 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView txtNombreCategoria;
         ImageView image_categoria;
+        Button categoryHandler;
         ClickOnRowListener clickOnRowListener;
 
         public MyViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView, ClickOnRowListener clickOnRowListener) {
             super(itemView);
             txtNombreCategoria = itemView.findViewById(R.id.txtNombreCategoria);
             image_categoria = itemView.findViewById(R.id.img_categoria);
+            categoryHandler = itemView.findViewById(R.id.categoryhandlerbutton);
             this.clickOnRowListener = clickOnRowListener;
             itemView.setOnClickListener(this);
+
+//            categoryHandler.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
+//                    FragmentManager fragmentManager = addCategoryFragment.getParentFragmentManager();
+//                    fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, addCategoryFragment, null).commit();
+//                }
+//            });
         }
+
 
         @Override
         public void onClick(View v) {
@@ -60,6 +78,13 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
         Category element = elements.get(position);
         holder.txtNombreCategoria.setText(String.valueOf(element.getName()));
         holder.image_categoria.setBackgroundResource(R.drawable.grappa_con_limon);
+        holder.categoryHandler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aqui es donde cambias el fragmento desde el boton
+                ((MainMenu) context).ChangeToAddCategoryFragment();
+            }
+        });
     }
 
     @Override
