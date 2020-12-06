@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.helpers.ButtonHelper;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.CarItem;
+import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.synnapps.carouselview.CarouselView;
@@ -74,6 +76,8 @@ public class DetailProductFragment extends Fragment {
         TextView productDetailPrice = view.findViewById(R.id.productDetailPrice);
 
 
+
+
         //TODO: Poner imagenes que no sean placeholders, ni jabones, ni grappas con limon - Marcos
         final int[] testImages = {R.drawable.soap, R.drawable.grappa_con_limon};
         CarouselView productDetailImages = view.findViewById(R.id.productPhotosCarousel);
@@ -87,7 +91,14 @@ public class DetailProductFragment extends Fragment {
 
         Button plusButton = view.findViewById(R.id.plusButton);
         Button minusButton = view.findViewById(R.id.minusButton);
-        Button addToCartButton = view.findViewById(R.id.addToCartButton);
+        final Button addToCartButton = view.findViewById(R.id.addToCartButton);
+        //Si el producto se encuentra en el carro de compras, inhabilita el boton
+        for(CarItem carItem : Manager.getInstance(getContext()).getCarItems()){
+            if(carItem.getProduct().getId() == bundle.getInt("PRODUCT_ID")){
+                addToCartButton.setEnabled(false);
+                addToCartButton.setText("PRODUCT ALREADY IN CART");
+            }
+        }
         final TextView productQuantityText = view.findViewById(R.id.productQuantityText);
 
         productDetailDescription.setText(bundle.getString("PRODUCT_DESCRIPTION"));
@@ -116,8 +127,11 @@ public class DetailProductFragment extends Fragment {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Product product = null;//new Product(); //TODO: Buscar Producto por id - Marcos
-                Manager.getInstance(getContext()).getCarItems().add(new CarItem(product, Integer.parseInt(productQuantityText.getText().toString())));
+                Category category = new Category(1, "Bebidas", null);
+                Product first_product = new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category);
+                Manager.getInstance(getContext()).getCarItems().add(new CarItem(first_product, Integer.parseInt(productQuantityText.getText().toString())));
+                addToCartButton.setEnabled(false);
+                addToCartButton.setText("PRODUCT ALREADY IN CART");
                 //TODO: Saul actualizar la burbujita aqui
             }
         });

@@ -9,9 +9,11 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.example.proyectofinal.fragments.car.CarFragment;
 import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.fragments.category.ListCategoryFragment;
 import com.example.proyectofinal.fragments.products.ListProductFragment;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -83,8 +85,13 @@ public class MainMenu extends AppCompatActivity {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        return super.onOptionsItemSelected(item);
+        switch(item.getItemId()){
+            case R.id.icono_cart:
+                FragmentHelper.ReplaceFragment(new CarFragment(), this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
