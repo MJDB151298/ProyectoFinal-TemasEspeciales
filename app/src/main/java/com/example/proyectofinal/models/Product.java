@@ -53,7 +53,8 @@ public class Product {
 
     public static ArrayList<Product> getProducts(Context context){
         ArrayList<Product> products = new ArrayList<>();
-        String[] productColumns = new String[]{dataBaseHelper.ID_PRODUCT, dataBaseHelper.NAME_PRODUCT, dataBaseHelper.DESCRIPRION, dataBaseHelper.PRICE, dataBaseHelper.ID_CATEGORY};
+        String[] productColumns = new String[]{dataBaseHelper.ID_PRODUCT, dataBaseHelper.NAME_PRODUCT, dataBaseHelper.DESCRIPRION,
+                dataBaseHelper.PRICE, dataBaseHelper.ID_CATEGORY, dataBaseHelper.IMG_PRODUCT};
         String[] categoryColumns = new String[]{dataBaseHelper.NAME_CATEGOTY, dataBaseHelper.ID_CATEGORY};
         Cursor cursorProduct = Manager.getInstance(context).open().fetchObject(productColumns, dataBaseHelper.TABLE_NAME_PRODUCT);
         try{
@@ -63,6 +64,7 @@ public class Product {
                 Category category = new Category(categoryCursor.getInt(1), categoryCursor.getString(0), null);
                 Product product = new Product(cursorProduct.getInt(0), cursorProduct.getString(1), cursorProduct.getString(2),
                         cursorProduct.getDouble(3), category);
+                product.getImages().add(cursorProduct.getString(5));
                 products.add(product);
             }
         }finally {

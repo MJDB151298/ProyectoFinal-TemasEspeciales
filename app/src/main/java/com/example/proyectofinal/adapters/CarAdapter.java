@@ -2,6 +2,8 @@ package com.example.proyectofinal.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,13 @@ import com.example.proyectofinal.fragments.car.CarFragment;
 import com.example.proyectofinal.fragments.products.ListProductFragment;
 import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.CarItem;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
@@ -27,6 +35,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
     private static List<CarItem> carItems;
     private static TextView carInfoText;
     private static FragmentActivity activity;
+    private static StorageReference storageReference;
 
     public CarAdapter(Context context, List<CarItem> carItems, TextView carInfoText, FragmentActivity activity){
         this.context = context;
@@ -76,7 +85,21 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>{
 
         public void bindData(final CarItem carItem){
             System.out.println("Binding: " + carItem.getProduct().getName());
-            carItemImage.setImageResource(R.drawable.soap);
+            final String image = carItem.getProduct().getImages().get(0);
+            storageReference = FirebaseStorage.getInstance().getReference().child("images/" + image);
+            try {
+                final File localFile = File.createTempFile("Image" + carItem.getProduct().getName(), "jpg");
+                storageReference.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                carItemImage.setImageBitmap(bitmap);
+                            }
+                        });
+            } catch (IOException e) {
+                System.out.println("guaaaay");
+            }
             carItemDescriptionText.setText(carItem.getProduct().getDescription());
             carItemPriceText.setText(Double.toString(carItem.getProduct().getPrice()));
             carQuantityText.setText(Integer.toString(carItem.getQuantity()));

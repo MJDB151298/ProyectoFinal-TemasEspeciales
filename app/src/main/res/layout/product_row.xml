@@ -28,9 +28,9 @@
                     android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/productCategoryText"
-                    app:layout_constraintStart_toEndOf="@+id/productPriceText"
-                    android:layout_marginStart="28dp" app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="24dp"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="62dp" android:layout_marginStart="45dp"
+                    app:layout_constraintStart_toEndOf="@+id/productPriceText"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="wrap_content"
