@@ -207,9 +207,22 @@ public class Manager {
         return cursor;
     }
 
+    public Boolean validateDeleteCategory(String id) {
+        String arreglohelper[] = new String[1];
+        arreglohelper[0] = id;
+        Cursor cursor = database.rawQuery("SELECT * FROM " +dataBaseHelper.TABLE_NAME_PRODUCT+ " WHERE " +dataBaseHelper.ID_CATEGORY+ " =?", arreglohelper);
+        return !cursor.moveToNext();
+    }
+
     //Delete Product
     public Boolean deleteProduct(Integer id) {
         database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, "id = ?", new String[]{id.toString()});
+        return Boolean.TRUE;
+    }
+
+    //Delete Category
+    public Boolean deleteCategory(String id) {
+        database.delete(dataBaseHelper.TABLE_NAME_CATEGOIES, dataBaseHelper.ID_CATEGORY + " = ?", new String[]{id});
         return Boolean.TRUE;
     }
 

@@ -44,6 +44,8 @@ public class Category {
         return id;
     }
 
+    public void setId(int id) {this.id = id;}
+
     public static Category getCategoryByName(String name, Context context){
         Cursor categories = Manager.getInstance(context).open().fetchCategoryByName(name);
         Category category = new Category(categories.getInt(1), categories.getString(0), null);
