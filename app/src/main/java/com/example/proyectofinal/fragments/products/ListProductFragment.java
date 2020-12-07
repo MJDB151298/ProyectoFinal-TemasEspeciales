@@ -96,7 +96,8 @@ public class ListProductFragment extends Fragment {
         //ButtonHelper.SwitchCallCreateProductButton((FloatingActionButton) getActivity().findViewById(R.id.callCreateProductButton), false);
 
         RecyclerView recyclerView = view.findViewById(R.id.productRecyclerView);
-        ListProductAdapter productListAdapter = new ListProductAdapter(this.getContext(), Product.getProducts(getContext()), this.getActivity());
+        ArrayList<Product> product = Product.getProducts(getContext());
+        ListProductAdapter productListAdapter = new ListProductAdapter(this.getContext(), product, this.getActivity());
         recyclerView.setAdapter(productListAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(mLayoutManager);

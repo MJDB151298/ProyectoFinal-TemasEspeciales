@@ -1,5 +1,8 @@
 package com.example.proyectofinal.fragments.products;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,9 +18,18 @@ import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.CarItem;
 import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,16 +87,51 @@ public class DetailProductFragment extends Fragment {
         TextView productDetailDescription = view.findViewById(R.id.productDetailDescription);
         TextView productDetailPrice = view.findViewById(R.id.productDetailPrice);
 
-        //TODO: Poner imagenes que no sean placeholders, ni jabones, ni grappas con limon - Marcos
-        final int[] testImages = {R.drawable.soap, R.drawable.grappa_con_limon};
-        CarouselView productDetailImages = view.findViewById(R.id.productPhotosCarousel);
-        productDetailImages.setPageCount(testImages.length);
-        productDetailImages.setImageListener(new ImageListener() {
+        List<Product> products = Product.getProducts(getContext());
+        Product product = null;
+        for(Product search : products){
+            if(search.getId() == bundle.getInt("PRODUCT_ID")){
+                System.out.println("El size de search: " + search.getImages().size());
+                product = search;
+            }
+
+        }
+        System.out.println("El size: " + product.getImages().size());
+        //Product product = Product.getProductById(getContext(), bundle.getInt("PRODUCT_ID"));
+        final List<Bitmap> images = new ArrayList<>();
+        final CarouselView productDetailImages = view.findViewById(R.id.productPhotosCarousel);
+        final ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(testImages[position]);
+                imageView.setImageBitmap(images.get(position));
             }
-        });
+        };
+
+        for(String imageId : product.getImages()){
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + imageId);
+            try {
+                final File localFile = File.createTempFile("Image" + product.getName(), "jpg");
+                final Product finalProduct = product;
+                storageReference.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                images.add(bitmap);
+                                productDetailImages.setImageListener(imageListener);
+                                productDetailImages.setPageCount(images.size());
+
+                            }
+                        });
+            } catch (IOException e) {
+                System.out.println("guaaaay");
+            }
+        }
+
+
+        System.out.println(images.size());
+
+
 
         Button plusButton = view.findViewById(R.id.plusButton);
         Button minusButton = view.findViewById(R.id.minusButton);

@@ -51,11 +51,19 @@ public class Manager {
         helper.close();
     }
 
+    //GET ALL OBJECTS
+    //columns: las columnas de la fila que quieren ser devueltas
+    //table: El nombre de la tabla que se desea buscar
     public Cursor fetchObject(String[] columns, String table) {
         Cursor cursor = database.query(table, columns, null, null, null, null, null);
         return cursor;
     }
 
+    //GET ANY OBJECT BY ID
+    //columns: las columnas de la fila que quieren ser devueltas
+    //table: El nombre de la tabla que se desea buscar
+    //id_type: El nombre del id que se busca
+    //id: El id por el cual se busca
     public Cursor fetchObjectById(String[] columns, String table, String id_type, Integer id) {
         Cursor cursor = database.query(table, columns, id_type + "=?", new String[]{id.toString()}, null, null, null);
         if(cursor != null){
@@ -94,9 +102,6 @@ public class Manager {
         values.put(dataBaseHelper.MAIL, mail);
         values.put(dataBaseHelper.PASSWORD_USER, pass);
         database.insert(dataBaseHelper.TABLE_NAME_USER, null, values);
-       /* database.execSQL("DROP TABLE IF EXISTS CATEGORY");
-        database.execSQL("DROP TABLE IF EXISTS PRODUCT");
-        database.execSQL("DROP TABLE IF EXISTS USER_APP");*/
         System.out.println("Se creo el user");
     }
 
@@ -209,8 +214,18 @@ public class Manager {
 
     //Delete Product
     public Boolean deleteProduct(Integer id) {
-        database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, "id = ?", new String[]{id.toString()});
+        database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, dataBaseHelper.ID_PRODUCT +"= ?", new String[]{id.toString()});
         return Boolean.TRUE;
+    }
+
+    //update product
+    public void updateProduct(Product product){
+        ContentValues values = new ContentValues();
+        values.put(dataBaseHelper.NAME_PRODUCT, product.getName());
+        values.put(dataBaseHelper.DESCRIPRION, product.getDescription());
+        values.put(dataBaseHelper.PRICE, product.getPrice());
+        values.put(dataBaseHelper.ID_CATEGORY, product.getCategory().getId());
+        database.update(dataBaseHelper.TABLE_NAME_PRODUCT, values, dataBaseHelper.ID_PRODUCT+ "= ?", new String[]{Integer.toString(product.getId())});
     }
 
 }

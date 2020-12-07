@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.connection.dataBaseHelper;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -148,6 +149,7 @@ public class AddCategoryFragment extends Fragment {
     }
 
     private void saveCategory() {
+        Bundle bundle = getArguments();
         String nombre = txtCategoryName.getText().toString();
         if(hayImagen)
         {

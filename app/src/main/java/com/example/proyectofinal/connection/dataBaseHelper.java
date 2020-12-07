@@ -30,6 +30,9 @@ public class dataBaseHelper extends SQLiteOpenHelper {
     public static final String PASSWORD_USER = "password";
     public static final String ID_USER = "id_user";
     public static final String IMG_USER = "image_user";
+    // tabla product image
+    public static final String TABLE_NAME_PRODUCT_IMAGE = "PRODUCT_IMAGE";
+    public static final String PRODUCT_IMAGE_ID = "id_product_image";
 
 
     private static final String TABLE_CATEGORY = "CREATE TABLE " + TABLE_NAME_CATEGOIES +
@@ -41,6 +44,11 @@ public class dataBaseHelper extends SQLiteOpenHelper {
             NAME_PRODUCT + " TEXT NOT NULL, "+DESCRIPRION+ " TEXT NOT NULL, "+PRICE+" REAL NOT NULL, "+ID_CATEGORY+" INTEGER NOT NULL," +
             IMG_PRODUCT + " BLOB NOT NULL," +
             " FOREIGN KEY ("+ID_CATEGORY+") REFERENCES "+TABLE_NAME_CATEGOIES+"("+ID_CATEGORY+") ) ";
+
+    private static final String TABLE_PRODUCT_IMAGE = "CREATE TABLE " + TABLE_NAME_PRODUCT_IMAGE +
+            "( " + PRODUCT_IMAGE_ID + " BLOB PRIMARY KEY, " +
+            ID_PRODUCT + " INTEGER NOT NULL, " + " FOREIGN KEY("+ID_PRODUCT+") REFERENCES " + TABLE_NAME_PRODUCT+"("+ID_PRODUCT+") )";
+
 
     private static final String TABLE_USER = "CREATE TABLE " + TABLE_NAME_USER +
             "( " + ID_USER + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -56,6 +64,7 @@ public class dataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(TABLE_CATEGORY);
         db.execSQL(TABLE_PRODUCT);
         db.execSQL(TABLE_USER);
+        db.execSQL(TABLE_PRODUCT_IMAGE);
     }
 
     @Override
