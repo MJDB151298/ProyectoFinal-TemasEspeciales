@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -63,9 +64,10 @@ public class AddProductFragment extends Fragment {
     ImageButton selectImageButton;
     ImageView productImageView;
     private boolean hayImagen = false;
+    public Uri imageUri;
+    private FirebaseStorage storage;
     private StorageReference storageReference;
     private String idImagen;
-    public Uri imageUri;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -139,6 +141,8 @@ public class AddProductFragment extends Fragment {
         Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
         final Spinner categorySpinner = getView().findViewById(R.id.categorySpinner);
         saveProductButton.setEnabled(false);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         selectImageButton = getView().findViewById(R.id.selectImageButton);
         selectImageButton.setOnClickListener(new View.OnClickListener() {
@@ -311,8 +315,8 @@ public class AddProductFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
-            Uri patch = data.getData();
-            productImageView.setImageURI(patch);
+            imageUri = data.getData();
+            productImageView.setImageURI(imageUri);
             productImageView.setVisibility(View.VISIBLE);
             selectImageButton.setVisibility(View.INVISIBLE);
         }

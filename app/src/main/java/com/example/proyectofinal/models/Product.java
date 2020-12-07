@@ -80,6 +80,7 @@ public class Product {
         contentValues.put(dataBaseHelper.ID_CATEGORY, product.getCategory().getId());
         contentValues.put(dataBaseHelper.IMG_PRODUCT, imageId);
         Manager.getInstance(context).open().getDatabase().insert(dataBaseHelper.TABLE_NAME_PRODUCT, null, contentValues);
+        Manager.getInstance(context).close();
         return true;
     }
 }
