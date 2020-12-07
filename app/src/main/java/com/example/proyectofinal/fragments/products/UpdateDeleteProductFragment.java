@@ -80,7 +80,12 @@ public class UpdateDeleteProductFragment extends Fragment {
 
         if(bundle != null && bundle.containsKey("PRODUCT_PRICE")){
             TextView productPriceText = view.findViewById(R.id.productPriceTextView);
-            productPriceText.setText(bundle.getString("PRODUCT_PRICE"));
+            productPriceText.setText(Double.toString(bundle.getDouble("PRODUCT_PRICE")));
+        }
+
+        if(bundle != null && bundle.containsKey("PRODUCT_DESCRIPTION")){
+            TextView productDescriptionText = view.findViewById(R.id.productUpdateDescriptionText);
+            productDescriptionText.setText(bundle.getString("PRODUCT_DESCRIPTION"));
         }
 
         //Llenando el spinner con las categorias
@@ -99,6 +104,7 @@ public class UpdateDeleteProductFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         final TextView productNameTextView = getView().findViewById(R.id.productNameTextView);
         final TextView productPriceText = getView().findViewById(R.id.productPriceTextView);
+        final TextView productDescriptionText = getView().findViewById(R.id.productUpdateDescriptionText);
         final Spinner categorySpinner = getView().findViewById(R.id.categorySpinner);
         Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
         Button updateProductButton = getView().findViewById(R.id.updateProductButton);
@@ -116,20 +122,19 @@ public class UpdateDeleteProductFragment extends Fragment {
             public void onClick(View v) {
                 Bundle receivedBundle = getArguments();
                 String productName = productNameTextView.getText().toString();
-                int productPrice = 0;
+                String productDescription = productDescriptionText.getText().toString();
+                double productPrice = 0;
                 try{
-                    productPrice = Integer.parseInt(productPriceText.getText().toString());
+                    productPrice = Double.parseDouble(productPriceText.getText().toString());
                 }catch(Exception e){
                     System.out.println("OOPS");
                 }
 
                 //TODO: USE DATABASE
-                /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
-                Product product = new Product(receivedBundle.getInt("PRODUCT_ID"), productName, productPrice, category);
-                DBManagerProducts dbManagerProducts = new DBManagerProducts(v.getContext()).open();
-                dbManagerProducts.update(product);
-                dbManagerProducts.close();**/
-
+                Category category = Category.getCategoryByName(categorySpinner.getSelectedItem().toString(), v.getContext());
+                Product product = new Product(receivedBundle.getInt("PRODUCT_ID"), productName, productDescription, productPrice, category);
+                Manager.getInstance(getContext()).open().updateProduct(product);
+                Manager.getInstance(getContext()).close();
                 FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
             }
         });

@@ -113,6 +113,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
                     bundle.putString("PRODUCT_NAME", productNameText.getText().toString());
                     bundle.putDouble("PRODUCT_PRICE", Double.parseDouble(productPriceText.getText().toString()));
                     bundle.putString("CATEGORY_NAME", productCategoryText.getText().toString());
+                    bundle.putString("PRODUCT_DESCRIPTION", productDescriptionText.getText().toString());
                     bundle.putString("PRODUCT_IMAGE", image);
                     bundle.putInt("PRODUCT_ID", Integer.parseInt(productIdText.getText().toString()));
 
@@ -133,6 +134,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
                     bundle.putDouble("PRODUCT_PRICE", Double.parseDouble(productPriceText.getText().toString()));
                     bundle.putString("CATEGORY_NAME", productCategoryText.getText().toString());
                     bundle.putString("PRODUCT_IMAGE", image);
+                    bundle.putString("PRODUCT_DESCRIPTION", productDescriptionText.getText().toString());
                     bundle.putInt("PRODUCT_ID", Integer.parseInt(productIdText.getText().toString()));
 
                     DetailProductFragment productDetailFragment = new DetailProductFragment();

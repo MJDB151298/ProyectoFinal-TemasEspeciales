@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.helpers.ButtonHelper;
 import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.helpers.SpinnerHelper;
@@ -38,6 +39,8 @@ import com.synnapps.carouselview.ImageListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
@@ -64,7 +67,8 @@ public class AddProductFragment extends Fragment {
     ImageButton selectImageButton;
     ImageView productImageView;
     private boolean hayImagen = false;
-    public Uri imageUri;
+    public Uri imageUriPrincipal;
+    public List<Uri> imageUriSecondaries = new ArrayList<>();
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private String idImagen;
@@ -229,6 +233,7 @@ public class AddProductFragment extends Fragment {
         saveProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                List<String> imagesId = new ArrayList<>();
                 String productName = productNameTextView.getText().toString();
                 String productDescription = productDescriptionText.getText().toString();
                 double productPrice = 0;
@@ -238,26 +243,19 @@ public class AddProductFragment extends Fragment {
                     System.out.println("OOPS");
                 }
 
-                if(hayImagen)
-                    uploadPic();
+                if(hayImagen){
+                    for(Uri uri : imageUriSecondaries){
+                        String imageId = uploadPic(uri);
+                        imagesId.add(imageId);
+                    }
+                }
+
 
 
                 Category category = Category.getCategoryByName(categorySpinner.getSelectedItem().toString(), v.getContext());
                 Product product = new Product(-1, productName, productDescription, productPrice, category);
-                Product.saveProduct(v.getContext(), product, idImagen);
-
-               // BitmapDrawable drawable = (BitmapDrawable) productImageView.getDrawable();
-                //Bitmap bitmap = drawable.getBitmap();
-               // ByteArrayOutputStream stream = new ByteArrayOutputStream();
-               // bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-               // String image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
-
-                //TODO: USE DATABASE
-                /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
-                System.out.println(category.getId() + " - " + category.getName());
-                DBManagerProducts dbManagerProducts = new DBManagerProducts(v.getContext()).open();
-                dbManagerProducts.insert(productName, productPrice, category.getId());
-                dbManagerProducts.close();**/
+                long id = Product.saveProduct(v.getContext(), product, idImagen);
+                Product.saveImages(getContext(), imagesId, id);
 
                 FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
             }
@@ -266,12 +264,12 @@ public class AddProductFragment extends Fragment {
         addCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: SAUL LLAMA TU FORMA DE GUARDAR CATEGORIAS DESDE AQUI
+                FragmentHelper.AddFragment(new AddCategoryFragment(), getActivity());
             }
         });
     }
 
-    private void uploadPic() {
+    private String uploadPic(Uri imagen) {
 
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Uploading image...");
@@ -280,7 +278,7 @@ public class AddProductFragment extends Fragment {
         String randomkey = UUID.randomUUID().toString();
         idImagen = randomkey;
         StorageReference riversRef = storageReference.child("images/" + randomkey);
-        UploadTask uploadTask = riversRef.putFile(imageUri);
+        UploadTask uploadTask = riversRef.putFile(imagen);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -302,10 +300,12 @@ public class AddProductFragment extends Fragment {
                 progressDialog.setMessage("Progress: " + (int) progressPercent + "%");
             }
         });
+        return randomkey;
     }
 
     private void getGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setType("image/");
         hayImagen = true;
         startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),200);
@@ -314,9 +314,19 @@ public class AddProductFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            imageUri = data.getData();
-            productImageView.setImageURI(imageUri);
+        assert data != null;
+        if(data.getClipData() != null){
+            imageUriPrincipal = data.getClipData().getItemAt(0).getUri();
+            for(int i = 0; i < data.getClipData().getItemCount(); i++){
+                imageUriSecondaries.add(data.getClipData().getItemAt(i).getUri());
+            }
+            productImageView.setImageURI(imageUriPrincipal);
+            productImageView.setVisibility(View.VISIBLE);
+            selectImageButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            imageUriPrincipal = data.getData();
+            productImageView.setImageURI(imageUriPrincipal);
             productImageView.setVisibility(View.VISIBLE);
             selectImageButton.setVisibility(View.INVISIBLE);
         }
