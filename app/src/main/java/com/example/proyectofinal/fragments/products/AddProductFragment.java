@@ -1,5 +1,6 @@
 package com.example.proyectofinal.fragments.products;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -23,11 +25,19 @@ import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.helpers.SpinnerHelper;
 import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -37,6 +47,8 @@ import static android.app.Activity.RESULT_OK;
  * create an instance of this fragment.
  */
 public class AddProductFragment extends Fragment {
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +62,10 @@ public class AddProductFragment extends Fragment {
     //Components
     ImageButton selectImageButton;
     ImageView productImageView;
+    private boolean hayImagen = false;
+    private StorageReference storageReference;
+    private String idImagen;
+    public Uri imageUri;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -118,6 +134,7 @@ public class AddProductFragment extends Fragment {
 
         final TextView productNameTextView = getView().findViewById(R.id.productNameTextView);
         final TextView productPriceText = getView().findViewById(R.id.productPriceTextView);
+        final TextView productDescriptionText = getView().findViewById(R.id.productDescriptionTextView);
         final Button saveProductButton = getView().findViewById(R.id.saveProductButton);
         Button addCategoryButton = getView().findViewById(R.id.addCategoryButton);
         final Spinner categorySpinner = getView().findViewById(R.id.categorySpinner);
@@ -144,7 +161,8 @@ public class AddProductFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(productNameTextView.getText().toString().length() > 0 && productPriceText.getText().toString().length() > 0){
+                if(productNameTextView.getText().toString().length() > 0 && productPriceText.getText().toString().length() > 0
+                        && productDescriptionText.getText().toString().length() > 0){
                     saveProductButton.setEnabled(true);
                 }
                 else{
@@ -166,7 +184,31 @@ public class AddProductFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(productNameTextView.getText().toString().length() > 0 && productPriceText.getText().toString().length() > 0){
+                if(productNameTextView.getText().toString().length() > 0 && productPriceText.getText().toString().length() > 0
+                && productDescriptionText.getText().toString().length() > 0){
+                    saveProductButton.setEnabled(true);
+                }
+                else{
+                    saveProductButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        productDescriptionText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(productNameTextView.getText().toString().length() > 0 && productPriceText.getText().toString().length() > 0
+                        && productDescriptionText.getText().toString().length() > 0){
                     saveProductButton.setEnabled(true);
                 }
                 else{
@@ -184,18 +226,27 @@ public class AddProductFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String productName = productNameTextView.getText().toString();
-                int productPrice = 0;
+                String productDescription = productDescriptionText.getText().toString();
+                double productPrice = 0;
                 try{
-                    productPrice = Integer.parseInt(productPriceText.getText().toString());
+                    productPrice = Double.parseDouble(productPriceText.getText().toString());
                 }catch(Exception e){
                     System.out.println("OOPS");
                 }
 
-                BitmapDrawable drawable = (BitmapDrawable) productImageView.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                String image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+                if(hayImagen)
+                    uploadPic();
+
+
+                Category category = Category.getCategoryByName(categorySpinner.getSelectedItem().toString(), v.getContext());
+                Product product = new Product(-1, productName, productDescription, productPrice, category);
+                Product.saveProduct(v.getContext(), product, idImagen);
+
+               // BitmapDrawable drawable = (BitmapDrawable) productImageView.getDrawable();
+                //Bitmap bitmap = drawable.getBitmap();
+               // ByteArrayOutputStream stream = new ByteArrayOutputStream();
+               // bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+               // String image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
 
                 //TODO: USE DATABASE
                 /**Category category = Category.getCategoryByName(v.getContext(), categorySpinner.getSelectedItem().toString());
@@ -216,9 +267,43 @@ public class AddProductFragment extends Fragment {
         });
     }
 
+    private void uploadPic() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Uploading image...");
+        progressDialog.show();
+
+        String randomkey = UUID.randomUUID().toString();
+        idImagen = randomkey;
+        StorageReference riversRef = storageReference.child("images/" + randomkey);
+        UploadTask uploadTask = riversRef.putFile(imageUri);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Failed to Upload", Snackbar.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Uploaded image", Toast.LENGTH_LONG).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                progressDialog.setMessage("Progress: " + (int) progressPercent + "%");
+            }
+        });
+    }
+
     private void getGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intent.setType("image/");
+        hayImagen = true;
         startActivityForResult(intent.createChooser(intent,"Seleccione la aplicacion"),200);
     }
 

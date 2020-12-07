@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.helpers.SpinnerHelper;
 import com.example.proyectofinal.models.Category;
@@ -144,12 +145,10 @@ public class UpdateDeleteProductFragment extends Fragment {
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                              /*  Bundle receivedBundle = getArguments();
-                                DBManagerProducts dbManagerProducts = new DBManagerProducts(getView().getContext()).open();
-                                dbManagerProducts.delete(receivedBundle.getInt("PRODUCT_ID"));
-                                dbManagerProducts.close();
-
-                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());*/
+                                Bundle receivedBundle = getArguments();
+                                Manager.getInstance(getContext()).open().deleteProduct(receivedBundle.getInt("PRODUCT_ID"));
+                                Manager.getInstance(getContext()).close();
+                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
                             }
 
                         })

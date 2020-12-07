@@ -166,9 +166,22 @@ public class Manager {
         else{
             return new User("Bad Credentials",null,null,null,null);
         }
+    }
 
+    //Fetch categories by name
+    public Cursor fetchCategoryByName(String name) {
+        String[] columns = new String[]{dataBaseHelper.NAME_CATEGOTY, dataBaseHelper.ID_CATEGORY};
+        Cursor cursor = database.query("CATEGORY",columns,dataBaseHelper.NAME_CATEGOTY + " = ? " , new String[]{name},null,null,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 
-
+    //Delete Product
+    public Boolean deleteProduct(Integer id) {
+        database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, "id = ?", new String[]{id.toString()});
+        return Boolean.TRUE;
     }
 
 }
