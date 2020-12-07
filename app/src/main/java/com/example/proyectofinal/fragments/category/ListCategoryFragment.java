@@ -88,7 +88,7 @@ public class ListCategoryFragment extends Fragment implements ListCategoryAdapte
 
         rellenarLista();
 
-        ListCategoryAdapter adapter = new ListCategoryAdapter(getContext(), elements, ListCategoryFragment.this);
+        ListCategoryAdapter adapter = new ListCategoryAdapter(getContext(), elements, getActivity());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -105,6 +105,7 @@ public class ListCategoryFragment extends Fragment implements ListCategoryAdapte
         while (cursor.moveToNext())
         {
             Category category = new Category();
+            category.setId(cursor.getInt(0));
             category.setName(cursor.getString(1));
             category.setImage(cursor.getString(2));
 
