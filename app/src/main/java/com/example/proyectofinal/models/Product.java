@@ -72,15 +72,10 @@ public class Product {
                 Cursor imagesCursor = Manager.getInstance(context).open().fetchObjectById(imagesColumns,
                         dataBaseHelper.TABLE_NAME_PRODUCT_IMAGE, dataBaseHelper.ID_PRODUCT, product.getId());
                 try{
-                    if(product.getId() == 1){
-                        product.getImages().add(cursorProduct.getString(5));
-                    }else{
-                        product.getImages().add(imagesCursor.getString(0));
-                        while(imagesCursor.moveToNext()){
+                    product.getImages().add(imagesCursor.getString(0));
+                    while(imagesCursor.moveToNext()){
                             product.getImages().add(imagesCursor.getString(0));
-                        }
                     }
-
                 }finally {imagesCursor.close();}
                 products.add(product);
             }
