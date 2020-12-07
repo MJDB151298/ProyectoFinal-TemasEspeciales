@@ -71,12 +71,9 @@ public class DetailProductFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail_product, container, false);
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         TextView productDetailDescription = view.findViewById(R.id.productDetailDescription);
         TextView productDetailPrice = view.findViewById(R.id.productDetailPrice);
-
-
-
 
         //TODO: Poner imagenes que no sean placeholders, ni jabones, ni grappas con limon - Marcos
         final int[] testImages = {R.drawable.soap, R.drawable.grappa_con_limon};
@@ -102,7 +99,7 @@ public class DetailProductFragment extends Fragment {
         final TextView productQuantityText = view.findViewById(R.id.productQuantityText);
 
         productDetailDescription.setText(bundle.getString("PRODUCT_DESCRIPTION"));
-        productDetailPrice.setText(bundle.getString("PRODUCT_PRICE"));
+        productDetailPrice.setText(Double.toString(bundle.getDouble("PRODUCT_PRICE")));
 
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +124,11 @@ public class DetailProductFragment extends Fragment {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Category category = new Category(1, "Bebidas", null);
-                Product first_product = new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category);
-                Manager.getInstance(getContext()).getCarItems().add(new CarItem(first_product, Integer.parseInt(productQuantityText.getText().toString())));
+                Category category = Category.getCategoryByName(bundle.getString("CATEGORY_NAME"), getContext());//new Category(1, "Bebidas", null);
+                Product product = new Product(bundle.getInt("PRODUCT_ID"), bundle.getString("PRODUCT_NAME"), bundle.getString("PRODUCT_DESCRIPTION"),
+                        bundle.getDouble("PRODUCT_PRICE"), category);
+                product.getImages().add(bundle.getString("PRODUCT_IMAGE"));
+                Manager.getInstance(getContext()).getCarItems().add(new CarItem(product, Integer.parseInt(productQuantityText.getText().toString())));
                 addToCartButton.setEnabled(false);
                 addToCartButton.setText("PRODUCT ALREADY IN CART");
                 //TODO: Saul actualizar la burbujita aqui
