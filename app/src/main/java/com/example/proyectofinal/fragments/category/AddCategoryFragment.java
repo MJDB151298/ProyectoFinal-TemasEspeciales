@@ -1,11 +1,38 @@
 package com.example.proyectofinal.fragments.category;
 
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.connection.dataBaseHelper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.UUID;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +45,15 @@ public class AddCategoryFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private EditText txtCategoryName;
+    private Button btnAddImage;
+    private Button btnSave;
+    private ImageView imgPreviewImage;
+    public Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private boolean hayImagen = false;
+    private String idImagen;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,5 +95,111 @@ public class AddCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_category, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        txtCategoryName = getView().findViewById(R.id.txtCategoryName);
+        imgPreviewImage = getView().findViewById(R.id.img_category_preview);
+        btnAddImage = getView().findViewById(R.id.btn_selectCategoryImage);
+        btnSave = getView().findViewById(R.id.btnSaveCategory);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveCategory();
+            }
+        });
+
+        btnAddImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePic();
+            }
+        });
+    }
+
+    private void saveCategory() {
+        String nombre = txtCategoryName.getText().toString();
+        if(hayImagen)
+        {
+            uploadPic();
+        }
+
+        dataBaseHelper conn = new dataBaseHelper(getContext());
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(dataBaseHelper.NAME_CATEGOTY, nombre);
+        if(hayImagen)
+        {
+            values.put(dataBaseHelper.IMG_CATEGORY, idImagen);
+        }
+        long idResultado = db.insert(dataBaseHelper.TABLE_NAME_CATEGOIES, null, values);
+        Toast.makeText(Objects.requireNonNull(getActivity()).getApplicationContext(), "CREATED: " + idResultado, Toast.LENGTH_SHORT).show();
+        txtCategoryName.setText("");
+        Bitmap bitmap = BitmapFactory.decodeFile("src/main/res/drawable/baseline_add_photo_alternate_black_18dp.png");
+        imgPreviewImage.setImageBitmap(bitmap);
+    }
+
+    private void choosePic() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null)
+        {
+            imageUri = data.getData();
+            imgPreviewImage.setImageURI(imageUri);
+            setHayImagen(true);
+        }
+    }
+
+    private void uploadPic() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Uploading image...");
+        progressDialog.show();
+
+        String randomkey = UUID.randomUUID().toString();
+        idImagen = randomkey;
+        StorageReference riversRef = storageReference.child("images/" + randomkey);
+        UploadTask uploadTask = riversRef.putFile(imageUri);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Failed to Upload", Snackbar.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
+                Toast.makeText(getContext(), "Uploaded image", Toast.LENGTH_LONG).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                progressDialog.setMessage("Progress: " + (int) progressPercent + "%");
+            }
+        });
+    }
+
+    public boolean isHayImagen() {
+        return hayImagen;
+    }
+
+    public void setHayImagen(boolean hayImagen) {
+        this.hayImagen = hayImagen;
     }
 }

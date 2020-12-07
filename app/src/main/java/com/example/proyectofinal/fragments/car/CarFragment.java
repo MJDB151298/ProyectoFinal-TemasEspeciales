@@ -1,7 +1,10 @@
 package com.example.proyectofinal.fragments.car;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.adapters.CarAdapter;
 import com.example.proyectofinal.adapters.ListProductAdapter;
+import com.example.proyectofinal.connection.Manager;
+import com.example.proyectofinal.fragments.products.ListProductFragment;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.CarItem;
+import com.example.proyectofinal.models.Category;
+import com.example.proyectofinal.models.Product;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -70,20 +78,51 @@ public class CarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_car, container, false);
 
-        List<CarItem> carItems = new ArrayList<>();
+
+
+        //List<CarItem> carItems = new ArrayList<>();
+        //Category category = new Category(1, "Bebidas", null);
+        //Product first_product = new Product(1, "Grappa con limon", "Esta es la real grappa", 100, category);
+        //Manager.getInstance(getContext()).getCarItems().add(new CarItem(first_product, 20));
+        //System.out.println("Los itemes del carrito de compra: " + Manager.getInstance(getContext()).getCarItems().size());
+        //carItems.add();
+
         double totalPrice = 0;
         int quantity = 0;
 
-        for(CarItem carItem : carItems){
+        for(CarItem carItem : Manager.getInstance(getContext()).getCarItems()){
             totalPrice += (carItem.getProduct().getPrice() * carItem.getQuantity());
             quantity += carItem.getQuantity();
         }
 
+        //Si confirmo la compra, elimino todos los elementos que se encuentran actualmente en el carrito.
+        Button checkoutButton = view.findViewById(R.id.checkoutButton);
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Realizar compra")
+                        .setMessage("Esta seguro que desea realizar esta compra?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Manager.getInstance(getContext()).getCarItems().clear();
+                                FragmentHelper.AddFragment(new ListProductFragment(), getActivity());
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
+
         TextView carInfoText = view.findViewById(R.id.carInfoText);
-        carInfoText.setText("Sub total (" + Integer.toString(quantity) + "items): " + Double.toString(totalPrice));
+        carInfoText.setText("Sub total (" + Integer.toString(quantity) + " items): " + Double.toString(totalPrice));
 
         RecyclerView recyclerView = view.findViewById(R.id.carRecyclerView);
-        CarAdapter carAdapter = new CarAdapter(this.getContext(), carItems);
+        CarAdapter carAdapter = new CarAdapter(this.getContext(), Manager.getInstance(getContext()).getCarItems(), carInfoText, getActivity());
         recyclerView.setAdapter(carAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(mLayoutManager);

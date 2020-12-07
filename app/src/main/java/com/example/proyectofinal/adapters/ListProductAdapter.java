@@ -82,6 +82,7 @@ public class ListProductAdapter extends RecyclerView.Adapter<ListProductAdapter.
                     Bundle bundle = new Bundle();
                     bundle.putString("PRODUCT_PRICE", productPriceText.getText().toString());
                     bundle.putString("PRODUCT_DESCRIPTION", productDescriptionText.getText().toString());
+                    bundle.putInt("PRODUCT_ID", Integer.parseInt(productIdText.getText().toString()));
 
                     DetailProductFragment productDetailFragment = new DetailProductFragment();
                     productDetailFragment.setArguments(bundle);

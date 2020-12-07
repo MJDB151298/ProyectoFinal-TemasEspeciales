@@ -17,8 +17,8 @@
     </FrameLayout>
     <Button
             android:text="@string/car_proceed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/button2"
+            android:layout_width="295dp"
+            android:layout_height="45dp" android:id="@+id/checkoutButton"
             android:background="@drawable/rounded_green_button"
             android:layout_marginEnd="24dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
@@ -27,8 +27,7 @@
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/carInfoText"
-            android:layout_marginEnd="334dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="19dp"
-            app:layout_constraintBottom_toTopOf="@+id/button2" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/checkoutButton" app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
