@@ -1,6 +1,8 @@
 package com.example.proyectofinal.fragments.category;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,9 +13,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.proyectofinal.MainMenu;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.adapters.ListCategoryAdapter;
+import com.example.proyectofinal.connection.dataBaseHelper;
 import com.example.proyectofinal.models.Category;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -28,6 +33,8 @@ public class ListCategoryFragment extends Fragment implements ListCategoryAdapte
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private dataBaseHelper dataBaseHelper;
+    private ArrayList<Category> elements = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,13 +77,17 @@ public class ListCategoryFragment extends Fragment implements ListCategoryAdapte
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_category, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.category_list);
-        ArrayList<Category> elements = new ArrayList<>();
-        Category category1 = new Category(1, "yogure", null);
-        Category category2 = new Category(2, "embutido", null);
-        Category category3 = new Category(3, "vaina", null);
-        elements.add(category1);
-        elements.add(category2);
-        elements.add(category3);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.flt_addCategory);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainMenu) getActivity()).ChangeToAddCategoryFragment();
+            }
+        });
+
+        rellenarLista();
+
         ListCategoryAdapter adapter = new ListCategoryAdapter(getContext(), elements, ListCategoryFragment.this);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
@@ -84,6 +95,23 @@ public class ListCategoryFragment extends Fragment implements ListCategoryAdapte
 
         recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    private void rellenarLista() {
+        dataBaseHelper = new dataBaseHelper(getContext());
+        SQLiteDatabase db = dataBaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + dataBaseHelper.TABLE_NAME_CATEGOIES, null);
+
+        while (cursor.moveToNext())
+        {
+            Category category = new Category();
+            category.setName(cursor.getString(1));
+            category.setImage(cursor.getString(2));
+
+            elements.add(category);
+        }
+
+        cursor.close();
     }
 
     @Override

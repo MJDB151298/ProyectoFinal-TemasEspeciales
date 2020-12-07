@@ -6,13 +6,13 @@
                                                    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="130dp"
+            android:layout_height="130dp" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginLeft="25sp" android:layout_marginTop="25sp">
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <Button
                     android:layout_width="16dp"
@@ -20,8 +20,8 @@
                     android:background="@android:drawable/dark_header"
                     android:backgroundTint="@color/cardview_shadow_end_color"
                     android:drawableStart="@drawable/round_settings_black_18dp"
-                    app:layout_constraintRight_toRightOf="@id/img_categoria"
-                    app:layout_constraintTop_toTopOf="@id/img_categoria" android:layout_marginRight="8dp"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginRight="12dp"/>
             <TextView
                     android:text="TextView"
                     android:layout_width="wrap_content"
@@ -32,8 +32,8 @@
                     app:layout_constraintHorizontal_bias="0.498"
             />
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:id="@+id/img_categoria" app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
