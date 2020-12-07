@@ -13,6 +13,10 @@ public class Category {
         this.image = image;
     }
 
+    public Category() {
+
+    }
+
     public String getName() {
         return name;
     }

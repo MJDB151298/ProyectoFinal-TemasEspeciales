@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -106,6 +108,29 @@ public class AddCategoryFragment extends Fragment {
         imgPreviewImage = getView().findViewById(R.id.img_category_preview);
         btnAddImage = getView().findViewById(R.id.btn_selectCategoryImage);
         btnSave = getView().findViewById(R.id.btnSaveCategory);
+
+        txtCategoryName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(txtCategoryName.getText().length() > 0)
+                {
+                    btnSave.setEnabled(true);
+                }
+                else {
+                    btnSave.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override

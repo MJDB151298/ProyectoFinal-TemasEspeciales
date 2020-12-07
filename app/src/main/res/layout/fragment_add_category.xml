@@ -25,8 +25,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/img_category_preview" android:layout_marginTop="50dp"/>
         <ImageView
                 android:src="@drawable/baseline_add_photo_alternate_black_36dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/img_category_preview"
+                android:layout_width="70dp"
+                android:layout_height="70dp" android:id="@+id/img_category_preview"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtCategoryName" android:layout_marginTop="20dp"/>
         <Button
@@ -34,6 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/btnSaveCategory"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_selectCategoryImage" android:layout_marginTop="100dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/btn_selectCategoryImage" android:layout_marginTop="60dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

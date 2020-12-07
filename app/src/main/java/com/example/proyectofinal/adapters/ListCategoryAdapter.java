@@ -1,12 +1,15 @@
 package com.example.proyectofinal.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +19,13 @@ import com.example.proyectofinal.R;
 import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.fragments.category.ListCategoryFragment;
 import com.example.proyectofinal.models.Category;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -25,6 +34,7 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
     private final Context context;
     private ClickOnRowListener clickOnRowListener;
     private List<Category> elements;
+    private StorageReference storageReference;
 
     public ListCategoryAdapter(Context context, List<Category> elements, ClickOnRowListener clickOnRowListener)
     {
@@ -74,10 +84,26 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ListCategoryAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull final ListCategoryAdapter.MyViewHolder holder, int position) {
         Category element = elements.get(position);
         holder.txtNombreCategoria.setText(String.valueOf(element.getName()));
-        holder.image_categoria.setBackgroundResource(R.drawable.grappa_con_limon);
+
+        storageReference = FirebaseStorage.getInstance().getReference().child("images/" + element.getImage());
+
+        try {
+            final File localFile = File.createTempFile("Image" + element.getName(), "jpg");
+            storageReference.getFile(localFile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            holder.image_categoria.setImageBitmap(bitmap);
+                        }
+                    });
+        } catch (IOException e) {
+            Toast.makeText(context, "Error image" + element.getName(), Toast.LENGTH_SHORT).show();
+        }
+
         holder.categoryHandler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
