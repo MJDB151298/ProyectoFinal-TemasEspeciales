@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.util.Log;
 
+import com.example.proyectofinal.models.CarItem;
 import com.example.proyectofinal.models.Category;
 import com.example.proyectofinal.models.Product;
 import com.example.proyectofinal.models.User;
@@ -24,11 +25,13 @@ public class Manager {
     private SQLiteDatabase database;
     private ArrayList<Product> allProducts;
     private ArrayList<Category> allCategories;
+    private ArrayList<CarItem> carItems;
     private User auth;
     private static Manager instance = null;
 
     public Manager(Context context) {
         this.context = context;
+        carItems = new ArrayList<>();
     }
 
     public static Manager getInstance(Context context) {
@@ -64,6 +67,10 @@ public class Manager {
 
     public ArrayList<Category> getAllCategories() {
         return allCategories;
+    }
+
+    public ArrayList<CarItem> getCarItems() {
+        return carItems;
     }
 
     public User getAuth() {
