@@ -4,14 +4,21 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.proyectofinal.connection.Manager;
 import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.fragments.category.ListCategoryFragment;
+import com.example.proyectofinal.fragments.login.loginFragment;
 import com.example.proyectofinal.fragments.products.ListProductFragment;
+import com.example.proyectofinal.fragments.profile.profileFragment;
 import com.example.proyectofinal.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -30,7 +37,9 @@ public class MainMenu extends AppCompatActivity {
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private ImageView view;
     private ActionBarDrawerToggle drawerToggle;
+    private TextView mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +112,9 @@ public class MainMenu extends AppCompatActivity {
             case R.id.nav_product:
                 fragmentClass = ListProductFragment.class;
                 break;
-
+            case R.id.menu_Profile:
+                fragmentClass = profileFragment.class;
+                break;
             default:
                 fragmentClass = HomeFragment.class;
         }
@@ -143,6 +154,10 @@ public class MainMenu extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        view = findViewById(R.id.imageView);
+        view.setImageBitmap(Manager.getInstance(MainMenu.this).getAuth().getPp());
+        mail = findViewById(R.id.txtMailMenu);
+        mail.setText(Manager.getInstance(MainMenu.this).getAuth().getMail());
         return true;
     }
 
