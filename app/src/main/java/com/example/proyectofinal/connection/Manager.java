@@ -58,6 +58,9 @@ public class Manager {
 
     public Cursor fetchObjectById(String[] columns, String table, String id_type, Integer id) {
         Cursor cursor = database.query(table, columns, id_type + "=?", new String[]{id.toString()}, null, null, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
         return cursor;
     }
 
