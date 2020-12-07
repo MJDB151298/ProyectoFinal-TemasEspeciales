@@ -22,9 +22,16 @@
     <group android:id="@+id/menu_bottom"
            android:checkableBehavior="single"
     >
-        <item android:title="@string/menu_logout" android:id="@+id/nav_logout" android:icon="@drawable/ic_logout"/>
-        <item android:title="@string/menu_Profile" android:id="@+id/nav_profile"
+        <item android:title="@string/menu_logout"
+              android:id="@+id/nav_logout"
+              android:icon="@drawable/ic_logout"/>
+
+        <item android:title="@string/menu_Profile"
+              android:id="@+id/menu_Profile"
               android:icon="@drawable/ic_profile"/>
-        <item android:id="@+id/nav_help" android:title="@string/menu_help" android:icon="@drawable/ic_help"/>
+
+        <item android:id="@+id/nav_help"
+            android:title="@string/menu_help"
+            android:icon="@drawable/ic_help"/>
     </group>
 </menu>
