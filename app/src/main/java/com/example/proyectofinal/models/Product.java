@@ -68,15 +68,17 @@ public class Product {
         }finally {
             cursorProduct.close();
         }
+        Manager.getInstance(context).close();
         return products;
     }
 
-    public static boolean saveProduct(Context context, Product product){
+    public static boolean saveProduct(Context context, Product product, String imageId){
         ContentValues contentValues = new ContentValues();
         contentValues.put(dataBaseHelper.NAME_PRODUCT, product.getName());
         contentValues.put(dataBaseHelper.DESCRIPRION, product.getDescription());
         contentValues.put(dataBaseHelper.PRICE, product.getPrice());
         contentValues.put(dataBaseHelper.ID_CATEGORY, product.getCategory().getId());
+        contentValues.put(dataBaseHelper.IMG_PRODUCT, imageId);
         Manager.getInstance(context).open().getDatabase().insert(dataBaseHelper.TABLE_NAME_PRODUCT, null, contentValues);
         return true;
     }
