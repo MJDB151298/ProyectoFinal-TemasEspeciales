@@ -11,8 +11,8 @@ public class FragmentHelper {
     public static void AddFragment(Fragment fragment, FragmentActivity activity){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragmentManager.findFragmentById(R.id.mobile_navigation));
-        fragmentTransaction.add(R.id.mobile_navigation, fragment);
+        fragmentTransaction.remove(fragmentManager.findFragmentById(R.id.nav_host_fragment));
+        fragmentTransaction.add(R.id.nav_host_fragment, fragment);
         fragmentTransaction.commit();
     }
 
@@ -20,7 +20,7 @@ public class FragmentHelper {
     public static void ReplaceFragment(Fragment fragment, FragmentActivity activity){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mobile_navigation, fragment).addToBackStack(null);
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment).addToBackStack(null);
         fragmentTransaction.commit();
     }
 }

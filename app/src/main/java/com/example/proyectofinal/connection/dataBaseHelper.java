@@ -21,6 +21,7 @@ public class dataBaseHelper extends SQLiteOpenHelper {
     public static final String ID_PRODUCT = "id_product";
     public static final String PRICE = "price";
     public static final String DESCRIPRION = "description";
+    public static final String IMG_PRODUCT = "image_product";
     // tabla user
     public static final String TABLE_NAME_USER = "USER_APP";
     public static final String NAME_USER = "name";
@@ -38,6 +39,7 @@ public class dataBaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT = "CREATE TABLE " + TABLE_NAME_PRODUCT +
             "( " + ID_PRODUCT + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME_PRODUCT + " TEXT NOT NULL, "+DESCRIPRION+ " TEXT NOT NULL, "+PRICE+" REAL NOT NULL, "+ID_CATEGORY+" INTEGER NOT NULL," +
+            IMG_PRODUCT + " BLOB NOT NULL," +
             " FOREIGN KEY ("+ID_CATEGORY+") REFERENCES "+TABLE_NAME_CATEGOIES+"("+ID_CATEGORY+") ) ";
 
     private static final String TABLE_USER = "CREATE TABLE " + TABLE_NAME_USER +

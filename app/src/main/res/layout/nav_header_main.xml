@@ -21,4 +21,11 @@
             android:contentDescription="@string/nav_header_desc"
             android:id="@+id/imageView" tools:srcCompat="@mipmap/ic_sidebar_round"/>
 
+    <TextView
+        android:id="@+id/txtMailMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

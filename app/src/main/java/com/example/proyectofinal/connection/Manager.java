@@ -58,6 +58,9 @@ public class Manager {
 
     public Cursor fetchObjectById(String[] columns, String table, String id_type, Integer id) {
         Cursor cursor = database.query(table, columns, id_type + "=?", new String[]{id.toString()}, null, null, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+        }
         return cursor;
     }
 
@@ -113,7 +116,7 @@ public class Manager {
         return aux;
     }
 
-    public User findUserEmail(String email) {
+    public User findUserByEmail(String email) {
         User aux = null;
         String query = "SELECT * FROM " + dataBaseHelper.TABLE_NAME_USER + " WHERE " + dataBaseHelper.MAIL + " = ?";
         Cursor cursor = database.rawQuery(query, new String[]{email});
@@ -129,12 +132,37 @@ public class Manager {
         return aux;
     }
 
+    public Boolean userExistByEmail(String email){
+
+        User aux = null;
+        aux = findUserByEmail(email.trim());
+        return aux != null;
+
+    }
+
+    public Boolean userExistByUsername(String username){
+        User aux = null;
+        aux = findUserByUsername(username.trim());
+        return aux != null;
+    }
+
+    public void updateUser(Bitmap pp,String name,String username,String mail){
+        String selection = dataBaseHelper.USERNAME+" LIKE ? ";
+        byte[] data = getBitmapAsByteArray(pp);
+        String args[] = {auth.getUsername()};
+        ContentValues values = new ContentValues();
+        values.put(dataBaseHelper.NAME_USER,name);
+        values.put(dataBaseHelper.USERNAME,username);
+        values.put(dataBaseHelper.MAIL,mail);
+        values.put(dataBaseHelper.IMG_USER,data);
+        int num = database.update(dataBaseHelper.TABLE_NAME_USER,values,selection,args);
+        setAuth(findUserByUsername(username));
+    }
+
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
-
-
     }
 
     public dataBaseHelper getHelper () {
@@ -149,7 +177,7 @@ public class Manager {
         User aux = null;
         aux = findUserByUsername(credential);
         if (aux == null){
-            aux = findUserEmail(credential);
+            aux = findUserByEmail(credential);
             if(aux == null){
                 return null;
             }
@@ -166,9 +194,23 @@ public class Manager {
         else{
             return new User("Bad Credentials",null,null,null,null);
         }
+    }
 
 
+    //Fetch categories by name
+    public Cursor fetchCategoryByName(String name) {
+        String[] columns = new String[]{dataBaseHelper.NAME_CATEGOTY, dataBaseHelper.ID_CATEGORY};
+        Cursor cursor = database.query("CATEGORY",columns,dataBaseHelper.NAME_CATEGOTY + " = ? " , new String[]{name},null,null,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 
+    //Delete Product
+    public Boolean deleteProduct(Integer id) {
+        database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, "id = ?", new String[]{id.toString()});
+        return Boolean.TRUE;
     }
 
 }

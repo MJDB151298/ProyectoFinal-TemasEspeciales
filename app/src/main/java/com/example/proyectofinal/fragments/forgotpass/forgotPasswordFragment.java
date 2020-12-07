@@ -66,7 +66,7 @@ public class forgotPasswordFragment extends Fragment {
                     mail.setError("Debe introducir su correo");
                 }
                 else{
-                    User auth = Manager.getInstance(getActivity()).findUserEmail(mail.getText().toString());
+                    User auth = Manager.getInstance(getActivity()).findUserByEmail(mail.getText().toString());
                     if(auth == null){
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("No existe ningun usuario con este correo")
