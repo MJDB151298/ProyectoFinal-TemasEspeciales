@@ -1,11 +1,14 @@
 package com.example.proyectofinal.fragments.login;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,9 +26,12 @@ import com.example.proyectofinal.fragments.register.registerFragment;
 import com.example.proyectofinal.models.User;
 import com.google.android.material.snackbar.Snackbar;
 
+import static android.app.Activity.RESULT_OK;
+
 public class loginFragment extends Fragment {
     Button btnLogin;
     TextView txtForgotPass,txtRegister,txtMail,txtPass;
+
 
     @Nullable
     @Override
@@ -40,7 +46,7 @@ public class loginFragment extends Fragment {
                     Snackbar.make(view,"Debe llenar todos los campos",Snackbar.LENGTH_LONG).show();
                 }
                 else{
-                    User aux = Manager.getInstance(getActivity()).logIn(txtMail.getText().toString(),txtPass.getText().toString());
+                    User aux = Manager.getInstance(getActivity()).logIn(txtMail.getText().toString().trim(),txtPass.getText().toString().trim());
                     if(aux == null){
                         txtMail.setError("User not exist");
                     }
@@ -51,16 +57,11 @@ public class loginFragment extends Fragment {
                         Manager.getInstance(getActivity()).setAuth(aux);
                         Intent intent = new Intent(getActivity(), MainMenu.class);
                         startActivity(intent);
-                        /**Fragment newFragment;
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        newFragment = new registerFragment();
-                        transaction.replace(R.id.nav_host_outside_fragment, newFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();**/
+                        getActivity().finish();
                     }
 
                 }
-            }
+                }
         });
         txtForgotPass = root.findViewById(R.id.txtforgotpass);
         txtForgotPass.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +89,9 @@ public class loginFragment extends Fragment {
         });
         txtMail = root.findViewById(R.id.txtmail);
         txtPass = root.findViewById(R.id.txtpass);
+
         return root;
     }
+
+
 }

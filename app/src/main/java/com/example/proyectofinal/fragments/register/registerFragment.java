@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.proyectofinal.MainMenu;
 import com.example.proyectofinal.R;
 
 import androidx.annotation.NonNull;
@@ -69,27 +71,26 @@ public class registerFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Boolean existUsername =  Manager.getInstance(getActivity()).userExistByUsername(user.getText().toString().trim()),
+                existMail = Manager.getInstance(getActivity()).userExistByEmail(mail.getText().toString().trim());
+                if(!(isEmpty()) && pass.getText().toString().equals(cPass.getText().toString()) && !(existMail) && !(existUsername) ){
 
-                if(!(isEmpty()) && pass.getText().toString().equals(cPass.getText().toString())){
                     view.buildDrawingCache();
                     Bitmap bmap = view.getDrawingCache();
-                    Manager.getInstance(getActivity()).createUser(bmap,name.getText().toString(),user.getText().toString(),mail.getText().toString(),pass.getText().toString());
-                    Manager.getInstance(getActivity()).setAuth(Manager.getInstance(getActivity()).findUserByUsername(user.getText().toString()));
-                    System.out.println(Manager.getInstance(getActivity()).getAuth().getName());
-                    /*Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("IMAGEN",url );
-                    startActivity(intent);*/
-                    /*name.setText(Manager.getInstance(getActivity()).getAuth().getName());
-                    user.setText(Manager.getInstance(getActivity()).getAuth().getUsername());
-                    pass.setText(Manager.getInstance(getActivity()).getAuth().getPassword());
-                    mail.setText(Manager.getInstance(getActivity()).getAuth().getMail());
-
-                    view.setImageBitmap(Manager.getInstance(getActivity()).getAuth().getPp());*/
-                    Manager.getInstance(getActivity()).close();
+                    Manager.getInstance(getActivity()).createUser(bmap,name.getText().toString().trim(),user.getText().toString().trim(),mail.getText().toString().trim(),pass.getText().toString().trim());
+                    Manager.getInstance(getActivity()).setAuth(Manager.getInstance(getActivity()).findUserByUsername(user.getText().toString().trim()));
+                    Intent intent = new Intent(getActivity(), MainMenu.class);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
                 else if( !(pass.getText().toString().equals(cPass.getText().toString()))){
                     pass.setError("Las contraseñas deben ser iguales");
-
+                }
+                else if (existMail){
+                    mail.setError("mail alredy taken");
+                }
+                else if(existUsername){
+                    user.setError("username alredy exist");
                 }
 
             }
