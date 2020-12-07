@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".fragments.category.UpdateDeleteCategoryFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editTextTextPersonName3"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="120dp"
+                android:hint="@string/CategoryName"/>
+        <ImageView
+                android:src="@drawable/baseline_add_photo_alternate_black_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" android:layout_marginTop="20dp"/>
+        <Button
+                android:text="@string/ChangeImage"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp" android:id="@+id/button"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" android:layout_marginTop="50dp"/>
+        <Button
+                android:text="@string/button_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button3" tools:layout_editor_absoluteY="410dp"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toStartOf="@+id/button4"
+                app:layout_constraintHorizontal_bias="0.5"/>
+        <Button
+                android:text="@string/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button4" tools:layout_editor_absoluteY="410dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/button3"
+                app:layout_constraintHorizontal_bias="0.5"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
