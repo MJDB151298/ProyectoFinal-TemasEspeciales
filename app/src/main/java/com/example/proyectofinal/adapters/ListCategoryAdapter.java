@@ -3,6 +3,7 @@ package com.example.proyectofinal.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import com.example.proyectofinal.MainMenu;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.fragments.category.ListCategoryFragment;
+import com.example.proyectofinal.fragments.category.UpdateDeleteCategoryFragment;
+import com.example.proyectofinal.fragments.products.UpdateDeleteProductFragment;
+import com.example.proyectofinal.helpers.FragmentHelper;
 import com.example.proyectofinal.models.Category;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -35,27 +39,26 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
     private ClickOnRowListener clickOnRowListener;
     private List<Category> elements;
     private StorageReference storageReference;
+    private static FragmentActivity activity;
 
-    public ListCategoryAdapter(Context context, List<Category> elements, ClickOnRowListener clickOnRowListener)
+    public ListCategoryAdapter(Context context, List<Category> elements, FragmentActivity activity)
     {
         this.context = context;
         this.elements = elements;
-        this.clickOnRowListener = clickOnRowListener;
+        this.activity = activity;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombreCategoria;
         ImageView image_categoria;
         Button categoryHandler;
         ClickOnRowListener clickOnRowListener;
 
-        public MyViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView, ClickOnRowListener clickOnRowListener) {
+        public MyViewHolder(@NonNull @org.jetbrains.annotations.NotNull View itemView) {
             super(itemView);
             txtNombreCategoria = itemView.findViewById(R.id.txtNombreCategoria);
             image_categoria = itemView.findViewById(R.id.img_categoria);
             categoryHandler = itemView.findViewById(R.id.categoryhandlerbutton);
-            this.clickOnRowListener = clickOnRowListener;
-            itemView.setOnClickListener(this);
 
 //            categoryHandler.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -67,12 +70,6 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
 //            });
         }
 
-
-        @Override
-        public void onClick(View v) {
-            clickOnRowListener.ClickOnRow(getAdapterPosition());
-        }
-
     }
 
     @NonNull
@@ -80,18 +77,18 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
     @Override
     public ListCategoryAdapter.MyViewHolder onCreateViewHolder(@NonNull @org.jetbrains.annotations.NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_row, parent, false);
-        return new MyViewHolder(view, clickOnRowListener);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull final ListCategoryAdapter.MyViewHolder holder, int position) {
-        Category element = elements.get(position);
+        final Category element = elements.get(position);
         holder.txtNombreCategoria.setText(String.valueOf(element.getName()));
 
         storageReference = FirebaseStorage.getInstance().getReference().child("images/" + element.getImage());
 
         try {
-            final File localFile = File.createTempFile("Image" + element.getName(), "jpg");
+            final File localFile = File.createTempFile("Image" + element.getImage(), "jpg");
             storageReference.getFile(localFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
@@ -107,8 +104,18 @@ public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapte
         holder.categoryHandler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Aqui es donde cambias el fragmento desde el boton
-                ((MainMenu) context).ChangeToAddCategoryFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("CATEGORY_NAME", holder.txtNombreCategoria.getText().toString());
+                bundle.putString("CATEGORY_PHOTO", element.getImage());
+                bundle.putString("CATEGORY_ID", Integer.toString(element.getId()));
+
+                UpdateDeleteCategoryFragment updateDeleteCategoryFragment = new UpdateDeleteCategoryFragment();
+                updateDeleteCategoryFragment.setArguments(bundle);
+                FragmentHelper.ReplaceFragment(updateDeleteCategoryFragment, activity);
+
+//                // Aqui es donde cambias el fragmento desde el boton
+//                ((MainMenu) context).ChangeToUpdateDeleteCategoryFragment();
             }
         });
     }

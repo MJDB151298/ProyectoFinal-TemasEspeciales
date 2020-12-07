@@ -20,6 +20,7 @@ import com.example.proyectofinal.fragments.car.CarFragment;
 
 import com.example.proyectofinal.fragments.category.AddCategoryFragment;
 import com.example.proyectofinal.fragments.category.ListCategoryFragment;
+import com.example.proyectofinal.fragments.category.UpdateDeleteCategoryFragment;
 import com.example.proyectofinal.fragments.login.loginFragment;
 import com.example.proyectofinal.fragments.products.ListProductFragment;
 
@@ -185,6 +186,12 @@ public class MainMenu extends AppCompatActivity {
         AddCategoryFragment addCategoryFragment = new AddCategoryFragment();
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
         fragmentManager.replace(R.id.nav_host_fragment, addCategoryFragment, null).commit();
+    }
+
+    public void ChangeToUpdateDeleteCategoryFragment() {
+        UpdateDeleteCategoryFragment updateDeleteCategoryFragment = new UpdateDeleteCategoryFragment();
+        FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+        fragmentManager.replace(R.id.nav_host_fragment, updateDeleteCategoryFragment, null).commit();
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`

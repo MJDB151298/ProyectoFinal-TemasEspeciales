@@ -212,6 +212,13 @@ public class Manager {
         return cursor;
     }
 
+    public Boolean validateDeleteCategory(String id) {
+        String arreglohelper[] = new String[1];
+        arreglohelper[0] = id;
+        Cursor cursor = database.rawQuery("SELECT * FROM " +dataBaseHelper.TABLE_NAME_PRODUCT+ " WHERE " +dataBaseHelper.ID_CATEGORY+ " =?", arreglohelper);
+        return !cursor.moveToNext();
+    }
+
     //Delete Product
     public Boolean deleteProduct(Integer id) {
         database.delete(dataBaseHelper.TABLE_NAME_PRODUCT, dataBaseHelper.ID_PRODUCT +"= ?", new String[]{id.toString()});
@@ -226,6 +233,11 @@ public class Manager {
         values.put(dataBaseHelper.PRICE, product.getPrice());
         values.put(dataBaseHelper.ID_CATEGORY, product.getCategory().getId());
         database.update(dataBaseHelper.TABLE_NAME_PRODUCT, values, dataBaseHelper.ID_PRODUCT+ "= ?", new String[]{Integer.toString(product.getId())});
+
+    //Delete Category
+    public Boolean deleteCategory(String id) {
+        database.delete(dataBaseHelper.TABLE_NAME_CATEGOIES, dataBaseHelper.ID_CATEGORY + " = ?", new String[]{id});
+        return Boolean.TRUE;
     }
 
 }
